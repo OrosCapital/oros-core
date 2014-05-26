@@ -1,0 +1,120 @@
+
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+
+</head>
+<body>
+
+<div class="page-header">
+    <h3>List of Loan Products</h3>
+</div>
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover table-condensed">
+            <thead>
+            <tr>
+                <th>Name of Loan Product</th>
+                <th>Interest Rate</th>
+                <th>Range</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td >Home Loan</td>
+                <td>16%</td>
+                <td>$4,00,000 - $20,00,000</td>
+                <td><sec:access controller="loan" action="showLoanInfo">
+                    <div class="clearfix">
+                        <a href="${g.createLink(controller: 'loan', action: 'showLoanInfo')}"
+                                                          id="homeLoan" class="btn btn-success btn-sm">Apply
+                        </a>
+
+                    </div>
+                </sec:access></td>
+
+            </tr>
+            <tr>
+                <td >Short term Loan</td>
+                <td>8%</td>
+                <td>$20,000-$1,50,000</td>
+                <td><sec:access controller="loan" action="showLoanInfo">
+                    <div class="clearfix">
+                        <a href="${g.createLink(controller: 'loan', action: 'showLoanInfo')}"
+                           id="shortTerm" class="btn btn-success btn-sm">Apply
+                        </a>
+
+                    </div>
+                </sec:access></td>
+
+            </tr>
+            <tr>
+                <td >Personal Loan</td>
+                <td>18%</td>
+                <td>$50,000-$5,00,000</td>
+                <td><sec:access controller="loan" action="showLoanInfo">
+                    <div class="clearfix">
+                        <a href="${g.createLink(controller: 'loan', action: 'showLoanInfo')}"
+                           id="personal" class="btn btn-success btn-sm">Apply
+                        </a>
+
+                    </div>
+                </sec:access></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+
+    jQuery(function ($) {
+
+        $("#homeLoan").click(function(e){
+            jQuery.ajax({
+                type: 'POST',
+                url: "${createLink(controller: "loan",action: "showLoanInfo")}?id="+1,
+                success: function (data) {
+                    $('#page-content').html(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                }
+            });
+            e.preventDefault();
+        });
+        $("#shortTerm").click(function(e){
+            jQuery.ajax({
+                type: 'POST',
+                url: "${createLink(controller: "loan",action: "showLoanInfo")}?id="+2,
+                success: function (data) {
+                    $('#page-content').html(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                }
+            });
+            e.preventDefault();
+        });
+        $("#personal").click(function(e){
+            jQuery.ajax({
+                type: 'POST',
+                url: "${createLink(controller: "loan",action: "showLoanInfo")}?id="+3,
+                success: function (data) {
+                    $('#page-content').html(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                }
+            });
+            e.preventDefault();
+        });
+
+    });
+</script>
+</body>
+</html>

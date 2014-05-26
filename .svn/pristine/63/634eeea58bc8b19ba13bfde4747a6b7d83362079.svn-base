@@ -1,0 +1,10 @@
+package com.gsl.oros.core.banking.operation
+
+class AccountIntroducer {
+    String relation
+
+    static belongsTo = [client : Client]
+
+    static constraints = {
+    }
+}

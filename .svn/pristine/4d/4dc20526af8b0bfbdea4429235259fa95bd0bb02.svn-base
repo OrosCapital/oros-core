@@ -1,0 +1,195 @@
+package com.gsl.oros.core.banking.accounting
+
+import com.gsl.oros.core.banking.product.accounting.FislYearUtility
+import com.gsl.oros.core.banking.settings.BankSetup
+import com.gsl.oros.core.banking.settings.FiscalYear
+import grails.converters.JSON
+
+class FiscalYearController {
+    def closed = [[id: 1, value: "true", status: "Active"],
+            [id: 2, value: "false", status: "InActive"]]
+
+    def index() {
+        render(view: '/coreBanking/settings/accounting/fiscalYear/_fiscalYearList',
+                model: [dateFormate: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                        dateMask: "99/99/9999",
+                        closed: closed.toList()])
+
+    }
+
+    def create() {
+
+        render(view: '/coreBanking/settings/accounting/fiscalYear/_createFiscalYear',
+                model: [dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                        dateMask: "99/99/9999",
+                        beginingDate: new Date().format("dd/MM/yyyy"),
+                        endingDate: new Date().format("dd/MM/yyyy"),
+                        closed: closed.toList()])
+
+    }
+
+    def save(FiscalYearCommand fiscalYearCommand) {
+
+        if (!request.method == 'POST') {
+            render(template: '/coreBanking/settings/accounting/fiscalYear/createFiscalYear')
+            return
+        }
+        if (fiscalYearCommand.hasErrors()) {
+            render(template: '/coreBanking/settings/accounting/fiscalYear/createFiscalYear', model: [fiscalYear: fiscalYearCommand])
+            return
+        }
+        FiscalYear fiscalYear
+        if (params.id) {     //update exchangeRate
+            fiscalYear = FiscalYear.get(fiscalYearCommand.id)
+            if (!fiscalYear) {
+                flash.message = "Fiscal Year not found"
+                render(template: '/coreBanking/settings/accounting/fiscalYear/fiscalYearList')
+                return
+            }
+            if (fiscalYearCommand.closed == true) {
+                def c = FiscalYear.createCriteria()
+                def activeFiscalY = c.list {
+                    not { 'in'("id", [fiscalYearCommand.id]) }
+                    and {
+                        eq("closed", true)
+                        eq("status", true)
+                    }
+                }
+                if (activeFiscalY.size() > 0) {
+                    flash.message = "One Fiscal Year Already Active"
+                    render(view: '/coreBanking/settings/accounting/fiscalYear/_createFiscalYear',
+                            model: [fiscalYear: fiscalYearCommand,
+                                    beginingDate: fiscalYearCommand.beginingDate.format("dd/MM/yyyy"),
+                                    endingDate: fiscalYearCommand.endingDate.format("dd/MM/yyyy"),
+                                    closed: closed.toList()])
+                    return
+                }
+            }
+            fiscalYear.properties = fiscalYearCommand.properties
+
+            if (!fiscalYear.validate()) {
+                render(template: '/coreBanking/settings/accounting/fiscalYear/createFiscalYear', model: [fiscalYear: fiscalYear])
+                return
+            }
+            fiscalYear.save(flush: true)
+            flash.message = "Fiscal Year Updated successfully"
+            render(template: '/coreBanking/settings/accounting/fiscalYear/fiscalYearList')
+            return
+
+        }
+        fiscalYear = new FiscalYear()
+        if (fiscalYearCommand.closed == true) {
+            def activeFiscalY = FiscalYear.findByClosedAndStatus(true, true)
+            if (activeFiscalY) {
+                flash.message = "One Fiscal Year Already Active"
+                render(view: '/coreBanking/settings/accounting/fiscalYear/_createFiscalYear',
+                        model: [fiscalYear: fiscalYearCommand,
+                                beginingDate: fiscalYearCommand.beginingDate.format("dd/MM/yyyy"),
+                                endingDate: fiscalYearCommand.endingDate.format("dd/MM/yyyy"),
+                                closed: closed.toList()])
+                return
+            }
+        }
+
+        fiscalYear.properties = fiscalYearCommand.properties
+
+        if (!fiscalYear.validate()) {
+            render(template: '/coreBanking/settings/accounting/fiscalYear/createFiscalYear', model: [fiscalYear: fiscalYear])
+            return
+        }
+        FiscalYear svaeFisYear = fiscalYear.save(flush: true)
+        if (!svaeFisYear) {
+            render(template: '/coreBanking/settings/accounting/fiscalYear/createFiscalYear', model: [fiscalYear: fiscalYear])
+        }
+        flash.message = "Fiscal Year created successfully"
+        render(template: '/coreBanking/settings/accounting/fiscalYear/fiscalYearList', model: [fiscalYear: fiscalYearCommand])
+        return
+
+    }
+
+    def delete(Long id) {
+        FiscalYear fiscalYear = FiscalYear.get(id)
+        if (!fiscalYear) {
+            flash.message = "Fiscal Year not found"
+            render(template: '/coreBanking/settings/accounting/fiscalYear/fiscalYearList')
+        }
+        fiscalYear.status = false
+        fiscalYear.save(flush: true)
+        flash.message = "Fiscal Year deleted successfully"
+        render(template: '/coreBanking/settings/accounting/fiscalYear/fiscalYearList')
+        return
+    }
+
+    def update(Long id) {
+        FiscalYear fiscalYear = FiscalYear.read(id)
+        if (!fiscalYear) {
+            flash.message = "Fiscal Year not found"
+            render(template: '/coreBanking/settings/accounting/fiscalYear/fiscalYearList')
+            return
+        }
+
+        def beginingDate = fiscalYear.beginingDate.format("dd/MM/yyyy")
+        def endingDate = fiscalYear.endingDate.format("dd/MM/yyyy")
+        render(template: '/coreBanking/settings/accounting/fiscalYear/createFiscalYear',
+                model: [fiscalYear: fiscalYear,
+                        dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                        closed: closed.toList(),
+                        beginingDate: beginingDate,
+                        endingDate: endingDate,
+                        dateMask: "99/99/9999"])
+        return
+
+    }
+
+
+    def list() {
+        int sEcho = params.sEcho ? params.getInt('sEcho') : 1
+        int iDisplayStart = params.iDisplayStart ? params.getInt('iDisplayStart') : 0
+        int iDisplayLength = params.iDisplayLength ? params.getInt('iDisplayLength') : 10
+        String sSortDir = params.sSortDir_0 ? params.sSortDir_0 : 'asc'
+        int iSortingCol = params.iSortingCols ? params.getInt('iSortingCols') : 1
+        String sortColumn = FislYearUtility.getSortColumn(iSortingCol)
+        List dataReturns = new ArrayList()
+        def c = FiscalYear.createCriteria()
+        def results = c.list(max: iDisplayLength, offset: iDisplayStart) {
+            and {
+                eq("status", true)
+            }
+            order(sortColumn, sSortDir)
+        }
+
+        int totalCount = results.totalCount
+        int serial = iDisplayStart;
+        if (totalCount > 0) {
+            if (sSortDir.equalsIgnoreCase('desc')) {
+                serial = (totalCount + 1) - iDisplayStart
+            }
+            results.each { FiscalYear fiscalYear ->
+                if (sSortDir.equalsIgnoreCase('asc')) {
+                    serial++
+                } else {
+                    serial--
+                }
+                dataReturns.add([DT_RowId: fiscalYear.id, 0: serial, 1: fiscalYear.beginingDate.format("dd/MM/yyyy"), 2: fiscalYear.endingDate.format("dd/MM/yyyy"), 3: fiscalYear.closed?"Active":"InActive", 4: ''])
+
+            }
+        }
+
+        Map gridData = [iTotalRecords: totalCount, iTotalDisplayRecords: totalCount, aaData: dataReturns]
+        String result = gridData as JSON
+        render result
+    }
+
+
+}
+
+class FiscalYearCommand {
+    Long id
+    Date beginingDate
+    Date endingDate
+    Boolean closed
+    Boolean status = true
+    static constraints = {
+//        closed nullable: false,unique:true
+    }
+}

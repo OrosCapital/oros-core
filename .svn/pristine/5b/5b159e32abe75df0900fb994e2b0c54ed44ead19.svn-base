@@ -1,0 +1,18 @@
+package com.gsl.oros.core.banking.operation
+
+import com.gsl.oros.core.banking.settings.BankSetup
+
+class BankDraftController {
+
+    def index() {
+        render(view: '/coreBanking/settings/operation/bankDraft/chargeList')
+
+    }
+
+    def create(){
+
+        render(template: '/coreBanking/settings/operation/bankDraft/personalInfo', model: [dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                dateMask: "99/99/9999"])
+
+    }
+}

@@ -1,0 +1,89 @@
+
+<g:if test="${personalInfo?.attachments?.status}">
+    <div class= "row">
+        <div class="col-sm-12">
+
+            <table class="table table-bordered table-striped table-hover table-condensed" id="attachmentListTable">
+                <thead>
+                <tr>
+                    <th>Caption</th>
+                    <th>File Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Size</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <g:each in="${personalInfo?.attachments}" var="attachment">
+
+                <tr>
+                    <td id="attCaption">${attachment.caption}</td>
+                    <td id="attName">${attachment.originalName}</td>
+
+                    <td id="attDescription">${attachment.description}</td>
+
+                    <td id="attType">${attachment.type}</td>
+                    <td id="attSize">${attachment.size}</td>
+
+
+                    <td class="actions ">
+                        <div class="btn-group">
+
+
+                            <sec:access controller="agent" action="downloadAttachment">
+                            <a class="btn btn-sm btn-success attachment-download-link"
+                               href="${g.createLink(controller: 'agent', action: 'downloadAttachment', params: [attachmentId: attachment?.id])}" attachmentId="${attachment?.id}" personalInfoId="${personalInfo?.id}"
+                               title="Download"><i class="glyphicon glyphicon-download"></i></a>
+                            </sec:access>
+
+                            <sec:access controller="agent" action="deleteAttachment">
+                                <a class="btn btn-sm delete btn-danger attachment-delete-link"
+                                   %{--onclick="return confirm('Are you sure to delete?')"--}%
+                                    onclick="confirmBox()"
+                                   href="#" attachmentId="${attachment?.id}" personalInfoId="${personalInfo?.id}"
+
+                                   title="Delete"><i class="glyphicon glyphicon-trash"></i></a>
+                            </sec:access>
+                        </div>
+                    </td>
+                </tr>
+                </g:each>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</g:if>
+
+<script type="text/javascript">
+
+        function confirmBox(){
+            var ans = confirm("Are you sure you want to delete?");
+            if(ans){
+                $('#attachmentListTable').on('click', 'a.attachment-delete-link', function(e) {
+                    e.preventDefault();
+                    var control = this;
+
+                    var attachmentId = $(control).attr('attachmentId');
+                    var personalInfoId = $(control).attr('personalInfoId');
+//        alert('atta'+attachmentId);
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: "${g.createLink(controller: 'agent',action:'deleteAttachment')}?id="+attachmentId+"&personalInfoId="+personalInfoId,
+                        success: function (data, textStatus) {
+                            $('#attachmentListTable').html(data);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        }
+                    });
+
+                });
+            }
+            else{
+                //do nothing
+            }
+
+        }
+</script>

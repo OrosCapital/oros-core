@@ -1,0 +1,329 @@
+<%@ page
+        contentType="text/html;charset=UTF-8"
+        import="com.gsl.oros.core.banking.settings.State; com.gsl.oros.core.banking.settings.Country; com.gsl.oros.core.banking.settings.accounting.VatCategory"
+%>
+<html>
+<head>
+    <style>
+    .form-control, label, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{font-size: 12px;}
+    label{max-width: 150px;}
+    </style>
+    <title>Bank Draft</title>
+</head>
+
+<body>
+<div class="col-xs-12">
+    <g:if test='${flash.message}'>
+        <div class='alert alert-success '>
+            <i class="icon-bell green"> <b> ${flash.message} </b> </i>
+        </div>
+    </g:if>
+</div>
+<div class="col-xs-12">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <ul id="myTab4" class="nav navbar-nav responsive padding-12 tab-color-blue background-blue">
+                    <li class="active" id="draftPersonalInfo">
+                        <a href="#personalInfo" data-toggle="tab">Personal Info</a>
+                    </li>
+                    <li class="" id="draftAccountInfo">
+                        <a href="#bankAccountInfo" data-toggle="tab">Bank Account Info</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tab-content responsive">
+
+        <div class="tab-pane active" id="personalInfo">
+            <g:hasErrors bean="${vendorGeneralAddress}">
+                <div class='alert alert-success '>
+                    <ul>
+                        <g:eachError var="err" bean="${vendorGeneralAddress}">
+                            <li><g:message error="${err}" /></li>
+                        </g:eachError>
+                    </ul>
+                </div>
+            </g:hasErrors>
+            <g:form name="draftOwnerPersonalInfo" id="draftOwnerPersonalInfo" method="post" role="form" class="form-horizontal" url="[controller:'vendor', action:'saveVendorGeneralAddress']" onsubmit="return false;">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <g:hiddenField name="id" value="${vendorMaster?.id}"/>
+                            <g:hiddenField name="addressId" value="${vendorMaster?.generalAddress?.id}"/>
+
+                            %{--<input type="text" class="col-sm-11 col-xs-12" placeholder="Contact Person Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Contact Person Name'" id="hhh"
+                                   name="hhgg" value="${vendorMasterID}"/>--}%
+                            <div class="form-group ${hasErrors(bean: vendorGeneralAddress, field: 'firstName','has-error')}">
+                                <label for="firstName" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="coreBanking.accounting.vendor.basicInfo.firstName" default="First Name"/><span class="red">*</span>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <input type="text" class="col-sm-11 col-xs-12" placeholder="First Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'" id="firstName"
+                                               name="firstName" value="${vendorMaster?.generalAddress?.contactPersonName}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ${hasErrors(bean: vendorGeneralAddress, field: 'mobileNo','has-error')}">
+                                <label for="mobileNo" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="default.address.mobile.label" default="Mobile No"/>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <input type="tel" class="col-sm-11 col-xs-12" placeholder="Mobile No" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mobile No'" id="mobileNo"
+                                               name="mobileNo" value="${vendorMaster?.generalAddress?.mobileNo}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ${hasErrors(bean: vendorGeneralAddress, field: 'addressLine1','has-error')}">
+                                <label for="addressLine1" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="coreBanking.accounting.vendor.generalAddress.addressLine1" default="Address Line1"/>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <input type="text" class="col-sm-11 col-xs-12" placeholder="First Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Address'" id="addressLine1"
+                                               name="addressLine1" value="${vendorMaster?.generalAddress?.addressLine1}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ${hasErrors(bean: vendorGeneralAddress, field: 'state','has-error')}">
+                                <label for="draftPersonalInfoState" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="default.state.label" default="State"/>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <g:select id="draftPersonalInfoState" name='state' class="col-sm-11 col-xs-12"
+                                                  noSelection="${['': 'Select State...']}"
+                                                  from='${vendorMaster?.generalAddress?.country != null ? State.findAllByCountry(vendorMaster?.generalAddress?.country) : State.findAllByCountry(vendorMaster?.generalAddress?.country)}'
+                                                  value="${vendorMaster?.generalAddress?.state?.id}"
+                                                  optionKey="id" optionValue="name"></g:select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ${hasErrors(bean: vendorGeneralAddress, field: 'postCode','has-error')}">
+                                <label for="postCode" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="default.address.postCode.label" default="Post Code"/><span class="red">*</span>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <input type="text" class="col-sm-11 col-xs-12" placeholder="Postal Code" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Postal Code'" id="postCode"
+                                               name="postCode" value="${vendorMaster?.generalAddress?.postCode}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+
+                            <div class="form-group ${hasErrors(bean: vendorMaster, field: 'lastName','has-error')}">
+                                <label for="lastName" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="coreBanking.accounting.vendor.basicInfo.lastName" default="Last Name"/><span class="red">*</span>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <input type="text" class="col-sm-11 col-xs-12" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" id="lastName"
+                                               name="lastName" value="${fieldValue(bean:vendorMaster,field:'lastName')}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ${hasErrors(bean: vendorMaster, field: 'email','has-error')}">
+                                <label for="email" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="coreBanking.accounting.vendor.basicInfo.email" default="Email"/>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <input type="email" class="col-sm-11 col-xs-12" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" id="email"
+                                               name="email" value="${fieldValue(bean:vendorMaster,field:'email')}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ${hasErrors(bean: vendorGeneralAddress, field: 'country','has-error')}">
+                                <label for="draftPersonalInfoCountry" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="default.country.label" default="Country"/><span class="red">*</span>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <g:select id="draftPersonalInfoCountry" name='country' class="col-sm-11 col-xs-12"
+                                                  noSelection="${['': 'Select Country...']}"
+                                                  from='${Country.findAllByStatus(true)}' value="${vendorMaster?.generalAddress?.country?.id}"
+                                                  optionKey="id" optionValue="name">
+                                        </g:select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ${hasErrors(bean: vendorGeneralAddress, field: 'city','has-error')}">
+                                <label for="city" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="default.city.label" default="City"/><span class="red">*</span>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <input type="text" class="col-sm-11 col-xs-12" placeholder="City" onfocus="this.placeholder = ''" onblur="this.placeholder = 'City'" id="city"
+                                               name="city" value="${vendorMaster?.generalAddress?.city}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ${hasErrors(bean: vendorGeneralAddress, field: 'nationalID','has-error')}">
+                                <label for="nationalID" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                                    <g:message code="coreBanking.clients.accountHolder.basicInfo.nationalID" default="National ID"/>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <div class="clearfix">
+                                        <input type="text" class="col-sm-11 col-xs-12" placeholder="National Identification No" onfocus="this.placeholder = ''" onblur="this.placeholder = 'National Identification No'" id="nationalID"
+                                               name="nationalID" value="${accountHolder?.nationalID}">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-9 col-md-3">
+                        <g:if test='${vendorMaster?.generalAddress ?.id!=null}'>
+                            <button class="btn btn-primary btn-sm" type="submit" name="updateVendorGeneralAddress" id="updateVendorGeneralAddress">Update</button>
+                        </g:if>
+                        <g:else>
+                            <button class="btn btn-primary btn-sm" type="submit" name="saveDraftPersonalInfo" id="saveDraftPersonalInfo">Next</button>
+                        </g:else>
+                    </div>
+                </div>
+
+            </g:form>
+        </div>
+        <div class="tab-pane" id="bankAccountInfo">
+            <g:render template='/coreBanking/settings/operation/bankDraft/bankAccount'/>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    jQuery(function ($) {
+        var dateF = "${dateFormat}";
+        var dateMask = "${dateMask}";
+        $(".datepicker").inputmask(dateMask);
+
+        $("#today").datepicker({
+            format: dateF,
+            gotoCurrent: true,
+            autoclose: true
+        });
+
+
+        $("#draftPersonalInfoCountry").change(function () {
+            var id = $(this).val();
+
+            $.ajax
+            ({
+                type: "POST",
+                url: "${createLink(controller: "vendor",action: "stateList")}",
+                data: {country: id},
+                cache: false,
+                success: function (html) {
+                    $("#draftPersonalInfoState").html(html);
+                }
+            });
+        });
+
+        $('#draftOwnerPersonalInfo').validate({
+
+            errorElement: 'div',
+            errorClass: 'help-block',
+            focusInvalid: false,
+            rules: {
+                firstName: {
+                    required: true
+                },
+                lastName: {
+                    required: true
+                },
+                country: {
+                    required: true
+                },
+                city: {
+                    required: true
+                },
+                postCode: {
+                    required: true
+                }
+            } ,
+            messages: {
+                firstName: {
+                    required: " "
+                },
+                lastName: {
+                    required: " "
+                },
+                postCode: {
+                    required: " "
+                },
+                country: {
+                    required: " "
+                },
+                city: {
+                    required: " "
+                }
+            },
+            highlight: function (e) {
+                $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+            },
+
+            success: function (e) {
+                $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+                $(e).remove();
+            },
+            errorPlacement: function (error, element) {
+                if(element.is(':checkbox') || element.is(':radio')) {
+                    var controls = element.closest('div[class*="col-"]');
+                    if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+                    else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+                }
+                else if(element.is('.select2')) {
+                    error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+                }
+                else if(element.is('.chosen-select')) {
+                    error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+                }
+                else error.insertAfter(element.parent());
+            },
+            submitHandler: function (form) {
+                $.ajax({
+                    url:"${createLink(controller: 'vendor', action: 'saveVendorGeneralAddress')}",
+                    type:'post',
+                    data: $("#vendorGeneralAddressForm").serialize(),
+                    success:function(data){
+                        $('#page-content').html(data);
+                    },
+                    failure:function(data){
+                    }
+                })
+
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

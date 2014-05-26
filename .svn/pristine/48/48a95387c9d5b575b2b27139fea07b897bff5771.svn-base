@@ -1,0 +1,72 @@
+package com.gsl.oros.core.banking.operation
+
+import com.gsl.oros.core.banking.settings.BankSetup
+import grails.converters.JSON
+
+class CashWithdrawalController {
+    Double minimumBalance = 500.00
+    Double existBalance = 10000.00
+
+    def index() {
+        render(view: '/coreBanking/settings/operation/cashWithdrawal/cashWithdrawal',
+                model: [decimalSep: BankSetup.properties.decimalSeparator ? BankSetup.properties.decimalSeparator : 2])
+    }
+
+    def accountNoVerify() {
+        def verifyAccountNo = Client.findByAccountNo(params.accountNo)
+        if (verifyAccountNo) {
+            def result = [isError: false, accountInfo: verifyAccountNo]
+            String outPut = result as JSON
+            render outPut
+            return
+        }
+        def result = [isError: true, message: "Account Holder Not Found"]
+        render result as JSON
+    }
+
+    def amountVerify() {
+
+    }
+
+    def chequeNoVerify() {
+
+    }
+
+    def save(CashWithdrawalCommand cashWithdrawalCommand) {
+        def file = request.getFile('signature')
+
+        Double amountExpect =cashWithdrawalCommand.amount
+        Double afterTransBalance = existBalance - amountExpect
+        if (amountExpect < existBalance) {
+            if (afterTransBalance > minimumBalance) {
+                def result = [isError: false, message: 'Transaction Ok']
+                render result as JSON
+                return
+            }
+            def result = [isError: true, message: 'Insufficient Balance']
+            render result as JSON
+            return
+        }
+        def result = [isError: true, message: 'Transaction cross the minimum balance limit']
+        render result as JSON
+        return
+    }
+}
+
+class CashWithdrawalCommand{
+    String accountNo
+    Double amount
+    String chequeNo
+    String signatureOwner
+    String signature
+
+
+
+    static constraints = {
+        accountNo nullable: true
+        amount nullable: true
+        chequeNo nullable: true
+        signatureOwner nullable: true
+    }
+}
+

@@ -1,0 +1,166 @@
+<head>
+
+</head>
+<body>
+
+<g:form name="agentContactAddressForm" id="agentContactAddressForm" method="post" role="form" class="form-horizontal" url="[action: 'saveContactDetail', controller: 'agent']">
+    <g:hiddenField name="id" value="${personalInfo?.id}"/>
+    <g:hiddenField name="conid" value="${contactAddress?.id}"/>
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="form-group">
+                <label for="phoneNo" class="col-sm-5 col-xs-8 control-label">
+                    <g:message code="agent.contactDetail.label.phoneNo" default="Phone No"/>
+                </label>
+                <div class="col-sm-7 col-xs-10">
+                    <g:textField name="phoneNo" id="phoneNo" placeholder="Phone No" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone No'" class="form-control" value="${fieldValue(bean:contactAddress,field:'phoneNo')}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email1" class="col-sm-5 col-xs-8 control-label">
+                    <g:message code="agent.contactDetail.label.email1" default=" Email"/>
+                </label>
+                <div class="col-sm-7 col-xs-10">
+                    <g:textField name="email1" id="email1" class="form-control"  onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" placeholder="Email" value="${fieldValue(bean:contactAddress,field:'email1')}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="faxNo" class="col-sm-5 col-xs-8 control-label">
+                    <g:message code="agent.contactDetail.label.faxNo" default=" Fax"/>
+                </label>
+                <div class="col-sm-7 col-xs-10">
+                    <g:textField name="faxNo" id="faxNo" class="form-control" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Fax No'" placeholder="Fax No" value="${fieldValue(bean:contactAddress,field:'faxNo')}"/>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="mobileNo" class="col-sm-5 col-xs-8 control-label">
+                    <g:message code="agent.contactDetail.label.mobileNo" default="Mobile No"/>
+                </label>
+                <div  class="col-sm-7 col-xs-10">
+                    <g:textField name="mobileNo" id="mobileNo" class="form-control" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mobile No'" placeholder="Mobile No" value="${fieldValue(bean:contactAddress,field:'mobileNo')}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="websiteUrl" class="col-sm-5 col-xs-8 control-label">
+                    <g:message code="agent.contactDetail.label.websiteUrl" default="Website Address"/>
+                </label>
+                <div  class="col-sm-7 col-xs-10">
+                    <g:textField name="websiteUrl" id="websiteUrl" placeholder="Website Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Website Address'"  class="form-control" value="${fieldValue(bean:contactAddress,field:'websiteUrl')}"/>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+<div class="clearfix form-actions">
+    <div class="col-md-offset-10 col-md-2">
+
+        <g:if test='${contactAddress?.id!=null}'>
+            <button class="btn btn-primary btn-sm" type="submit" name="updateContactAddress" id="updateContactAddress">Update</button>
+        </g:if>
+        <g:else>
+            <button class="btn btn-primary btn-sm" type="submit" name="saveContactAddress" id="saveContactAddress">Next</button>
+        </g:else>
+
+
+    </div>
+</div>
+
+</g:form>
+<script type="text/javascript">
+    jQuery(function ($) {
+    $('#agentContactAddressForm').validate({
+
+        errorElement: 'div',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        rules: {
+            phoneNo: {
+                required: false
+
+
+            },
+            email1: {
+                required: false
+
+            },
+            fax: {
+                required: false
+
+            },
+            mobileNo: {
+                required: false
+
+            },
+            websiteAddress: {
+                required: false
+
+            }
+
+        } ,
+        messages: {
+            phoneNo: {
+                required: " "
+
+
+            },
+            email1: {
+                required: " "
+
+            },
+            fax: {
+                required: " "
+
+            },
+            mobileNo: {
+                required: " "
+
+            },
+            websiteAddress: {
+                required: " "
+
+            }
+
+        },
+        invalidHandler: function (event, validator) { //display error alert on form submit
+            $('.alert-danger', $('.loginForm')).show();
+        },
+
+        highlight: function (e) {
+            $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+        },
+
+        success: function (e) {
+            $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+            $(e).remove();
+        },
+        submitHandler: function (form) {
+            $.ajax({
+                url:"${createLink(controller: 'agent', action: 'saveContactDetail')}",
+                type:'post',
+                data: $("#agentContactAddressForm").serialize(),
+                success:function(data){
+                    $('#page-content').html(data);
+                },
+                failure:function(data){
+                }
+            })
+
+        }
+
+    });
+
+    });
+
+</script>
+</body>
+
+
+

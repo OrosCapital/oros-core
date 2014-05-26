@@ -8,7 +8,7 @@ grails.project.source.level = 1.6
 grails.project.war.file = "target/oros.war"
 grails.plugin.location.'oros-attachment-plugin' = "/inplace/oros-attachment-plugin"
 
-grails.project.fork = [
+/*grails.project.fork = [
     // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
     //  compile: [maxMemory: 256, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
 
@@ -22,7 +22,7 @@ grails.project.fork = [
     war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
     // configure settings for the Console UI JVM
     console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
-]
+]*/
 
 grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {
@@ -53,7 +53,7 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         runtime 'mysql:mysql-connector-java:5.1.27'
-//        build 'com.lowagie:itext:2.1.7'
+        build 'com.lowagie:itext:2.1.7'
         // runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
         compile 'org.apache.commons:commons-lang3:3.1'
     }
@@ -84,10 +84,10 @@ grails.project.dependency.resolution = {
         //compile ":less-asset-pipeline:1.5.0"
         //compile ":coffee-asset-pipeline:1.5.0"
         //compile ":handlebars-asset-pipeline:1.0.0.3"
-//        compile ":jasper:1.7.0"
+        compile ":jasper:1.8.0"
 //        runtime ":export:1.5"
         compile ":spring-security-core:2.0-RC2"
-//        runtime ":mail:1.0.1"
+        compile ":mail:1.0.5"
 //        compile ":rendering:0.4.4"
     }
 }

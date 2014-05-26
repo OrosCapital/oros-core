@@ -1,0 +1,186 @@
+package com.gsl.oros.core.banking.settings
+
+import com.gsl.oros.core.banking.product.settings.ExchRateUtility
+import grails.converters.JSON
+
+class ExchangeRateController {
+
+    def index() {
+        def (List dataReturns, int totalCount) = exchangeRateList()
+        if(totalCount>0){
+            render(view: '/coreBanking/settings/exchangeRate/_exchangeRateList',model: [dataReturns:dataReturns,totalCount:totalCount,list:true])
+        }else{
+            render(view: '/coreBanking/settings/exchangeRate/_exchangeRateList',model:[totalCount:totalCount])
+        }
+    }
+
+    private List exchangeRateList() {
+        def c = ExchangeRate.createCriteria()
+        def result = c.list(max: 10, offset: 0) {
+            and {
+                eq('status', true)
+            }
+            order('id', 'asc')
+        }
+        List dataReturns = new ArrayList()
+        int totalCount = result.totalCount
+        if (totalCount > 0) {
+            def actionBtn = ''
+            result.each { ExchangeRate exchangeRate ->
+                actionBtn = "<sec:access controller='exchangeRate' action='update'><span class='col-xs-6'><a href='' exchRateId='${exchangeRate.id}' class='edit-exchangeRate' title='Edit'><span class=' glyphicon glyphicon-pencil orange'></span></a></span></sec:access>" +
+                        "<sec:access controller='exchangeRate' action='delete'><span class='col-xs-6'><a href='' exchRateId='${exchangeRate.id}' class='delete-exchangeRate' title='Delete'><span class='red glyphicon glyphicon-trash'></span></a></span></sec:access>"
+                dataReturns.add([DT_RowId: exchangeRate.id, currencys: exchangeRate.currency.name, buyPrice: exchangeRate.buyPrice, sellPrice: exchangeRate.sellPrice, date: exchangeRate.date.format("dd/MM/yyyy"), actionBtn: actionBtn])
+            }
+        }
+        [dataReturns, totalCount]
+    }
+
+    def create() {
+        render(view: '/coreBanking/settings/exchangeRate/_createExchangeRate',
+                model: [dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                        dateMask: "99/99/9999", currentDt: new Date().format("dd/MM/yyyy"), decimalSep: BankSetup.properties.decimalSeparator ? BankSetup.properties.decimalSeparator : 2])
+    }
+
+    def save(ExchangeCommand exchangeCommand) {
+        println(params)
+        if (!request.method == 'POST') {
+            render(template: '/coreBanking/settings/exchangeRate/createExchangeRate')
+            return
+        }
+        if (exchangeCommand.hasErrors()) {
+            render(template: '/coreBanking/settings/exchangeRate/createExchangeRate', model: [exchangeRate: exchangeCommand])
+            return
+        }
+        ExchangeRate exchangeRate
+
+        if (params.id) {     //update exchangeRate
+            exchangeRate = ExchangeRate.get(exchangeCommand.id)
+            if (!exchangeRate) {
+                flash.message = "Exchange Rate not found"
+                render(template: '/coreBanking/settings/exchangeRate/exchangeRateList')
+                return
+            }
+            exchangeRate.properties = exchangeCommand.properties
+
+            if (!exchangeRate.validate()) {
+                render(template: '/coreBanking/settings/exchangeRate/createExchangeRate', model: [exchangeRate: exchangeRate])
+                return
+            }
+            exchangeRate.save(flush: true)
+            def (List dataReturns, int totalCount) = exchangeRateList()
+            flash.message = "Exchange Rate Updated successfully"
+            render(template: '/coreBanking/settings/exchangeRate/exchangeRateList',model: [dataReturns:dataReturns,totalCount:totalCount,list:true])
+            return
+        }
+        exchangeRate = new ExchangeRate(exchangeCommand.properties)
+
+        if (!exchangeRate.validate()) {
+            render(template: '/coreBanking/settings/exchangeRate/createExchangeRate', model: [exchangeRate: exchangeRate])
+            return
+        }
+        ExchangeRate svaeExch = exchangeRate.save(flush: true)
+        if (!svaeExch) {
+            render(template: '/coreBanking/settings/exchangeRate/createExchangeRate', model: [exchangeRate: exchangeRate])
+        }
+        def (List dataReturns, int totalCount) = exchangeRateList()
+        flash.message = "Exchange Rate created successfully"
+        render(template: '/coreBanking/settings/exchangeRate/exchangeRateList',model: [dataReturns:dataReturns,totalCount:totalCount,list:true])
+        return
+
+    }
+
+    def delete(Long id) {
+        def (List dataReturns, int totalCount) = exchangeRateList()
+        ExchangeRate exchangeRate = ExchangeRate.get(id)
+        if (!exchangeRate) {
+            flash.message = "Exchange Rate not found"
+            render(template: '/coreBanking/settings/exchangeRate/exchangeRateList')
+            return
+        }
+        exchangeRate.status = false
+        exchangeRate.save(flush: true)
+        flash.message = "Exchange Rate deleted successfully"
+        render(template: '/coreBanking/settings/exchangeRate/exchangeRateList',model: [dataReturns:dataReturns,totalCount:totalCount,list:true])
+        return
+    }
+
+    def update(Long id) {
+        ExchangeRate exchangeRate = ExchangeRate.read(id)
+        if (!exchangeRate) {
+            flash.message = "Exchange Rate not found"
+            render(template: '/coreBanking/settings/exchangeRate/exchangeRateList')
+            return
+        }
+
+        def date = exchangeRate.date.format("dd/MM/yyyy")
+        render(template: '/coreBanking/settings/exchangeRate/createExchangeRate',
+                model: [exchangeRate: exchangeRate,
+                        dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                        dateMask: "99/99/9999", currentDt: date,
+                        decimalSep: BankSetup.properties.decimalSeparator ? BankSetup.properties.decimalSeparator : 2])
+    }
+
+    def list() {
+        int sEcho = params.sEcho ? params.getInt('sEcho') : 1
+        int iDisplayStart = params.iDisplayStart ? params.getInt('iDisplayStart') : 0
+        int iDisplayLength = params.iDisplayLength ? params.getInt('iDisplayLength') : 10
+        String sSortDir = params.sSortDir_0 ? params.sSortDir_0 : 'asc'
+        int iSortingCol = params.iSortingCols ? params.getInt('iSortingCols') : 1
+        //Search string, use or logic to all fields that required to include
+        String sSearch = params.sSearch ? params.sSearch : null
+        if (sSearch) {
+            sSearch = "%" + sSearch + "%"
+        }
+        String sortColumn = ExchRateUtility.getSortColumn(iSortingCol)
+        List dataReturns = new ArrayList()
+        def c = ExchangeRate.createCriteria()
+        def results = c.list(max: iDisplayLength, offset: iDisplayStart) {
+            and {
+                eq("status", true)
+            }
+            if (sSearch) {
+                or {
+                    ilike('currency.name', sSearch)
+                }
+            }
+            order(sortColumn, sSortDir)
+        }
+        int totalCount = results.totalCount
+        int serial = iDisplayStart;
+        if (totalCount > 0) {
+            String actionBtn = ''
+            if (sSortDir.equalsIgnoreCase('desc')) {
+                serial = (totalCount + 1) - iDisplayStart
+            }
+            results.each { ExchangeRate exchangeRate ->
+                if (sSortDir.equalsIgnoreCase('asc')) {
+                    serial++
+                } else {
+                    serial--
+                }
+                actionBtn = "<sec:access controller='exchangeRate' action='update'><span class='col-xs-6'><a href='' exchRateId='${exchangeRate.id}' class='edit-exchangeRate' title='Edit'><span class='green  glyphicon glyphicon-pencil orange'></span></a></span></sec:access>" +
+                        "<sec:access controller='exchangeRate' action='delete'><span class='col-xs-6'><a href='' exchRateId='${exchangeRate.id}' class='delete-exchangeRate' title='Delete'>"
+                dataReturns.add([DT_RowId: exchangeRate.id, 0: serial, 1: exchangeRate.currency.name, 2: exchangeRate.buyPrice, 3: exchangeRate.sellPrice, 4: exchangeRate.date.format("dd/MM/yyyy"), 5: actionBtn])
+
+            }
+        }
+
+        Map gridData = [iTotalRecords: totalCount, iTotalDisplayRecords: totalCount, aaData: dataReturns]
+        String result = gridData as JSON
+        render result
+    }
+
+
+}
+
+class ExchangeCommand {
+    Long id
+    Double buyPrice
+    Double sellPrice
+    Date date
+    Currencys currency
+    Boolean status = true
+    static constraints = {
+
+    }
+}

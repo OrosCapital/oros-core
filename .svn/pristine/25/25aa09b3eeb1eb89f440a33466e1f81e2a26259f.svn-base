@@ -1,0 +1,297 @@
+package com.gsl.oros.core.banking.operation
+
+import com.gsl.oros.core.banking.accountHolder.AccountHolder
+import com.gsl.oros.core.banking.settings.BankSetup
+import com.gsl.oros.core.banking.settings.Signature
+import grails.converters.JSON
+import org.springframework.web.multipart.MultipartHttpServletRequest
+import org.springframework.web.multipart.commons.CommonsMultipartFile
+
+class AccountOpenController {
+    def attachmentService
+
+    def index() {
+        int tabSelector = 1
+        render(view: '/coreBanking/settings/operation/accountOpen',
+                model: [tabSelector: tabSelector,
+                        dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                        dateMask: "99/99/9999",
+                        currentDt: new Date().format("dd/MM/yyyy")])
+
+    }
+
+    def createAccount() {
+        render(template: '/coreBanking/settings/operation/createAccount')
+    }
+
+    def showClientInfo(Long clientId) {
+        Map accountHolderMap
+        AccountHolder accountHolder = AccountHolder.findByIdNotEqual(clientId)
+        if (!accountHolder) {
+            accountHolderMap = [available: false, message: "Account holder not found"]
+            render(accountHolderMap as JSON)
+            return
+        }
+        accountHolderMap = [accountHolder: accountHolder, nationalilty:accountHolder.nationality1.name]
+        render(accountHolderMap as JSON)
+    }
+
+    def save() {
+        Signature signInstance = new Signature(params)
+
+        MultipartHttpServletRequest mpr = (MultipartHttpServletRequest) request;
+        CommonsMultipartFile file = (CommonsMultipartFile) mpr.getFile("imag")
+
+        String clientID = Integer.toString(15)
+        def originalFilename = file.originalFilename
+        long uniqueNumber = new Date().getTime()
+        def fileNameToSave = uniqueNumber + "_" + originalFilename
+
+
+
+        String fileName = file.getContentType()
+        String filePath = request.getSession().getServletContext().getRealPath("/");
+        String name = file.getOriginalFilename()
+        String type = file.getContentType().substring(6)
+        Long userId = 15
+
+        String filename = file.getOriginalFilename()
+        String urlLink = "D:/GSL/clientPhotos" + "/" + userId + "/" + fileNameToSave.substring(1, fileNameToSave.length() - 4)
+        def urlDir = "${resource(dir: 'images/userImages')}" + "/" + userId + "/"
+        //def urlDir = "D:/GSL/clientPhotos" + "/" + userId + "/"
+        def urlFile = fileNameToSave
+
+        signInstance.accountNo = 1000
+        signInstance.name = fileNameToSave.substring(1, fileNameToSave.length() - 4)
+        signInstance.nameExtension = name
+        signInstance.type = type
+        signInstance.urlLink = urlLink
+
+        try {
+            if (originalFilename.empty) {
+                render(contentType: 'text/json') {
+                    [success: true, message: 'Image Should Be Selected First', noImage: 1]
+                }
+            }
+            attachmentService.storeImage(file, fileNameToSave, clientID)
+            signInstance.save(failOnError: true)
+            flash.message = "Saved Successfully"
+            def clientImage = "/clientPhotos/" + clientID + "/" + fileNameToSave
+            def result = [success: true, imagePath: clientImage, message: flash.message]
+            render result as JSON
+
+
+        } catch (Exception e) {
+            flash.message = "Can not be Saved Successfully"
+        }
+
+/*        try {
+            if (name.empty) {
+                render(contentType: 'text/json') {
+                    [success: true, message: 'Image Should Be Selected First', noImage: 1]
+                }
+            }
+            signInstance.save(failOnError: true)
+            flash.message = "Saved successfully"
+            render(view: '/coreBanking/settings/operation/_attachmentInformation')
+            byte[] userImage = f.getBytes()
+            FileUtils.writeByteArrayToFile(new File(grailsApplication.config.images.location.toString() + File.separator + userId, fileNameToSave), userImage)
+            String fullPath = filePath + grailsApplication.config.images.location.substring(8) + fileNameToSave
+            def filesName = [success: true, imgPath: urlLink, urlDir: urlDir, urlFile: urlFile, message: flash.message]
+            render filesName as JSON
+        } catch (Exception e) {
+            flash.message = "Can not be Saved Successfully"
+        }*/
+    }
+
+    private List longList(List<String> clients) {
+        List result = new ArrayList();
+        for (int i = 0; i < clients.size(); i++)
+            result.add(Long.parseLong(clients.get(i)));
+        return result;
+    }
+
+    def saveAccount() {
+        int accountCategory = Integer.parseInt(params.accountCategoryId)
+        int accountType = Integer.parseInt(params.accountTypeId)
+        List<Long> clientIds = []
+        AccountOpen accountOpen = null
+        if (params.jointClients) {
+            List<String> jClients = (List<String>) params.jointClients
+            jClients = longList(jClients)
+            jClients.add(Long.parseLong(params.clientId).toString())
+
+            for (int i = 0; i < jClients.size(); i++) {
+                clientIds << Long.parseLong(jClients[i].toString())
+            }
+
+            for (int i = 0; i < clientIds.size(); i++) {
+                accountOpen = new AccountOpen()
+                accountOpen.client = clientIds[i]
+                accountOpen.accountCategory = accountCategory
+                accountOpen.accountType = accountType
+                accountOpen.save(flush: true)
+            }
+
+        } else {
+            accountOpen = new AccountOpen(
+                    client: params.clientId,
+                    accountCategory: accountCategory,
+                    accountType: accountType,
+            )
+            accountOpen.save(flush: true);
+        }
+
+        def tabSelector = 1
+        flash.message = " Account created successfully"
+        render(view: '/coreBanking/settings/operation/accountOpen',
+                model: [accountTitle:"Title of Account",
+                        accountOpenObj:accountOpen,
+                        accountType:accountType,
+                        accountCategory:accountCategory,
+                        tabSelector: tabSelector,
+                        dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                        dateMask: "99/99/9999", currentDt: new Date().format("dd/MM/yyyy"),decimalSep: BankSetup.properties.decimalSeparator ? BankSetup.properties.decimalSeparator : 2])
+    }
+
+    def accOpenBasicInfoSave(AccOpenBasicInfoCommand accOpenBasicInfoCommand) {
+        if (request.method == 'POST') {
+            int tabSelector = 2
+            if (accOpenBasicInfoCommand.hasErrors()) {
+                render(view: '/coreBanking/settings/operation/accountOpen', model: [commandObj: accOpenBasicInfoCommand, tabSelector: tabSelector])
+                return
+            }
+
+            Account account = new Account(accOpenBasicInfoCommand.properties)
+            account.accountOpen = AccountOpen.read(params.accountOpenId)
+            if (!account.validate()) {
+                render(view: '/coreBanking/settings/operation/accountOpen', model: [commandObj: accOpenBasicInfoCommand, tabSelector: tabSelector])
+                return
+            }
+            Account saveAccObj = account.save(flush: true)
+            flash.message = "Account information save successfully"
+            render(view: '/coreBanking/settings/operation/accountOpen',
+                    model: [saveAccObj: saveAccObj,
+                            accountCategory:accOpenBasicInfoCommand.modeOfOperation,
+                            accountType:accOpenBasicInfoCommand.natureOfOperation,
+                            accountOpenId: params.accountOpenId,
+                            openingDate:saveAccObj.openingDate.format("dd/MM/yyyy"),
+                            accountTitle:saveAccObj.accountTitle,
+                            dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                            dateMask: "99/99/9999",
+                            tabSelector: tabSelector])
+        }
+    }
+
+    def introducerInfoSave(IntroducerInfoCommand introducerInfoCommand) {
+        if (!request.method == 'POST') {
+            flash.message = "Retail Introducer have some problem!"
+            render (template: 'retailClientList')
+            return
+        }
+        Account account = Account.get(introducerInfoCommand.id)
+        if (!account) {
+            flash.message = "Account not found"
+            return
+        }
+        if (introducerInfoCommand.hasErrors()) {
+            def result = [isError:true, message:"Introducer data have some problem!!!"]
+            String output = result as JSON
+            render(output)
+            return
+        }
+
+        AccountIntroducer accountIntroducer= new AccountIntroducer(introducerInfoCommand.properties)
+        if(!accountIntroducer.validate()){
+            def result = [isError:true, message:"Introducer data have some validated problem!!"]
+            render(result as JSON)
+            return
+        }
+
+        AccountIntroducer saveIntroducerInstance = accountIntroducer.save(flush: true)
+        if(!saveIntroducerInstance){
+            def result = [isError:true, message:"Introducer dose not save successfully!!"]
+            render(result as JSON)
+            return
+        }
+
+        account.getAccIntroducer().add(saveIntroducerInstance)
+        Account savedAccount = account.save(flash:true)
+
+        def result = [isError:false, message:"Introducer added successfully.", accountIntroducer: saveIntroducerInstance, client:introducerInfoCommand.client ]
+        String output = result as JSON
+        println(output)
+        render output
+    }
+
+
+    def otherBankAccInfoSave(OtherBankAcInfoCommand otherBankAcInfoCommand) {
+        if (request.method == 'POST') {
+            int tabSelector = 3
+            if (!otherBankAcInfoCommand.hasErrors()) {
+                flash.message = "Other bank information successfully"
+                render(view: '/coreBanking/settings/operation/accountOpen', model: [commandObj: otherBankAcInfoCommand, tabSelector: tabSelector])
+            } else {
+                render(view: '/coreBanking/settings/operation/accountOpen', model: [commandObj: otherBankAcInfoCommand, tabSelector: tabSelector])
+            }
+        }
+    }
+}
+
+class AccOpenBasicInfoCommand {
+
+    String accountTitle
+    int modeOfOperation
+    int natureOfOperation
+    double initialDeposit
+    String accountPurpose
+    Date openingDate
+    String sourceOfFund
+    double monthlyIncome
+    boolean tAndC
+    AccountOpen accountOpen
+
+    static constraints = {
+        accountTitle nullable: false
+        openingDate nullable: false
+        initialDeposit nullable: false
+        accountPurpose nullable: false
+        sourceOfFund nullable: false
+        natureOfOperation nullable: false
+        monthlyIncome nullable: false
+        initialDeposit nullable: false
+        modeOfOperation nullable: false
+        tAndC nullable: false
+    }
+}
+
+
+class IntroducerInfoCommand {
+    Long id
+    String relation
+    AccountHolder accountHolder
+    Account account
+    static constraints = {
+        id blank: true, nullable: true
+        relation blank: false, nullable: false
+        accountHolder blank: false, nullable: false
+    }
+}
+
+class OtherBankAcInfoCommand {
+    String titleAccount
+    String otherBankBranch
+    Long otherBankAcNo
+    String otherBankType
+    String otherBankSortCode
+    static constraints = {
+        titleAccount blank: false, nullable: false, validator: { val, obj ->
+            if (val.length() < 3)
+                return "accountOpen.OtherBankInfo.titleAccount"
+        }
+        otherBankBranch blank: false, nullable: false
+        otherBankAcNo blank: false
+        otherBankType blank: false
+        otherBankSortCode blank: false
+    }
+}

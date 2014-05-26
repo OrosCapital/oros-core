@@ -1,0 +1,123 @@
+<style>
+.form-inline .form-group{
+    margin-bottom: 10px !important;
+    vertical-align: top;
+}
+label{
+    width:155px;
+    padding-right:10px;
+}
+input,select,textarea{
+    width: 175px;
+    margin-right:20px;
+}
+.form-group.has-error label{
+    border-color: #F09784;
+    box-shadow: none;
+    color: #D68273;
+}
+</style>
+
+<g:form id="educationForm" name="educationForm" method="post" role="form" class="form-inline">
+
+    <g:hiddenField name="id" id="id" value="${educationalInfo?.id}"/>
+    <g:hiddenField name="accountHolderId" id="accountHolderId" value="${accountHolder?.id}"/>
+
+    <div class="form-group ${hasErrors(bean:educationalInfoCommand,field:'degreeName','has-error')}">
+        <label for="degreeName">Degree*</label>
+        <input type="text" placeholder="Enter Degree Name"
+               id="degreeName" name="degreeName"  value="${educationalInfo?.degreeName}">
+    </div>
+    <div class="form-group ${hasErrors(bean:educationalInfoCommand,field:'boardName','has-error')}">
+        <label for="boardName">Board Name*</label>
+        <input type="text" placeholder="Enter Board Name"
+               id="boardName" name="boardName" value="${educationalInfo?.boardName}">
+    </div>
+    <div class="form-group ${hasErrors(bean:educationalInfoCommand,field:'instituteName','has-error')}">
+        <label for="instituteName">Institute Name*</label>
+        <input type="text" placeholder="Enter Institute Name"
+               id="instituteName" name="instituteName" value="${educationalInfo?.instituteName}">
+    </div>
+    <div class="form-group ${hasErrors(bean:educationalInfoCommand,field:'achievedResult','has-error')}">
+        <label for="achievedResult">Result*</label>
+        <input type="text" placeholder="Enter Your Result"
+               id="achievedResult" name="achievedResult"  value="${educationalInfo?.achievedResult}">
+    </div>
+    <div class="clearfix form-actions align-right">
+        <g:if test="${accountHolder?.educationalInfo}">
+            <button type="submit" id="educationSubmitButton" class="btn btn-info">
+                <i class="icon-ok bigger-110"></i>Add More</button>
+        </g:if>
+        <g:else>
+            <button type="submit" id="educationSubmitButton" class="btn btn-info">
+                <i class="icon-ok bigger-110"></i>Add</button>
+        </g:else>
+    </div>
+</g:form>
+
+<div class= "row" id="EducationListDiv">
+    <g:render template="educationListTable"/>
+</div>
+
+<script type="text/javascript">
+    $('#educationForm').validate({
+        errorElement: 'div',
+        errorClass: 'help-block hidden',
+        focusInvalid: false,
+        rules: {
+            degreeName: {
+                required: true
+            },
+            boardName: {
+                required: true
+            },
+            instituteName: {
+                required: true
+            },
+            achievedResult: {
+                required: true
+            }
+        } ,
+        messages: {
+            degreeName: {
+                required: "Please provide degree"
+            },
+            boardName: {
+                required: "Please provide board name"
+            },
+            instituteName: {
+                required: "Please provide institute name"
+            },
+            achievedResult: {
+                required: "Please provide result"
+
+            }
+        },
+        invalidHandler: function (event, validator) { //display error alert on form submit
+            $('.alert-danger', $('#educationForm')).show();
+        },
+        highlight: function (e) {
+            $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+        },
+        success: function (e) {
+            $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+            $(e).remove();
+        },
+        submitHandler: function (form) {
+            var actionurl ="${g.createLink(controller:'accountHolderInfo', action: 'saveEducation')}";
+            $.ajax({
+                url: actionurl,
+                type: 'post',
+                data: $("#educationForm").serialize(),
+                success: function(data) {
+//                    $('#educationContent').html(data);
+                    $('#EducationListDiv').html(data);
+                    clearForm('#educationForm');
+//                    $('#identificationForm :input#document').val('');
+                    $('#educationForm :input#accountHolderId').val('${accountHolder?.id}');
+                    $('#educationSubmitButton').html('<i class="icon-ok bigger-110"></i>Add More');
+                }
+            });
+        }
+    });
+</script>

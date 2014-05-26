@@ -1,0 +1,196 @@
+package com.gsl.oros.core.banking.settings
+
+import grails.converters.JSON
+
+class CountryController {
+    def countryService
+
+    def index() {
+
+        LinkedHashMap resultMap =countryService.countryPaginateList(params)
+        if(!resultMap || resultMap.totalCount== 0){
+            render(template: '/coreBanking/settings/country/countryList', model: [dataReturns: null, totalCount: 0])
+            return
+        }
+        int totalCount =resultMap.totalCount
+        render(template: '/coreBanking/settings/country/countryList', model: [dataReturns: resultMap.results, totalCount: totalCount])
+    }
+
+    def create() {
+        render(template: '/coreBanking/settings/country/createCountry')
+    }
+
+    def save(CountryCommand countryCommand) {
+        if (!request.method == 'POST') {
+            render(template: '/coreBanking/settings/country/createCountry')
+            return
+        }
+        if (countryCommand.hasErrors()) {
+            render(template: '/coreBanking/settings/country/createCountry', model: [country: countryCommand])
+            return
+        }
+        Country country
+        if (params.id) {     //update Country
+            country = Country.get(countryCommand.id)
+            if (!country) {
+                flash.message = "Country not found"
+                render(template: '/coreBanking/settings/country/countryList')
+                return
+            }
+            country.properties = countryCommand.properties
+            if (!countryCommand.validate()) {
+                render(template: '/coreBanking/settings/country/createCountry', model: [country: country])
+                return
+            }
+            country.save(flush: true)
+
+            LinkedHashMap resultMap =countryService.countryPaginateList(params)
+
+            flash.message = "Country Updated successfully"
+            render(template: '/coreBanking/settings/country/countryList', model: [dataReturns: resultMap.results, totalCount: resultMap.totalCount])
+            return
+        }
+        country = new Country(countryCommand.properties)
+
+        if (!countryCommand.validate()) {
+            render(template: '/coreBanking/settings/country/createCountry', model: [country: country])
+            return
+        }
+        Country savedCou = country.save(flush: true)
+        if (!savedCou) {
+            render(template: '/coreBanking/settings/country/createCountry', model: [country: country])
+        }
+
+        LinkedHashMap resultMap =countryService.countryPaginateList(params)
+
+        flash.message = "Country created successfully"
+        render(template: '/coreBanking/settings/country/countryList', model: [dataReturns: resultMap.results, totalCount: resultMap.totalCount])
+        return
+    }
+
+    def delete(Long id) {
+
+        Country country = Country.get(id)
+
+        if (!country) {
+            flash.message = "Country not found"
+            render(template: '/coreBanking/settings/country/countryList')
+        }
+        country.status = false
+        if (country.save(flush: true)) {
+            Currencys currencys = Currencys.findByCountry(country)
+            currencys.status = false
+            currencys.save(failOnError: true)
+        }
+
+//        LinkedHashMap resultMap =countryService.countryPaginateList(params)
+        def result=[isError:false,message:"Country deleted successfully"]
+        String outPut=result as JSON
+        render outPut
+    }
+
+
+
+    def update(Long id) {
+        Country country = Country.read(id)
+        if (!country) {
+            flash.message = "Country not found"
+            render(template: '/coreBanking/settings/country/countryList')
+        }
+        render(template: '/coreBanking/settings/country/createCountry', model: [country: country])
+    }
+
+    def list() {
+        LinkedHashMap gridData
+        String result
+        LinkedHashMap resultMap =countryService.countryPaginateList(params)
+        if(!resultMap || resultMap.totalCount== 0){
+            gridData = [iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: null]
+            result = gridData as JSON
+            render result
+            return
+        }
+        int totalCount =resultMap.totalCount
+        gridData = [iTotalRecords: totalCount, iTotalDisplayRecords: totalCount, aaData: resultMap.results]
+        result = gridData as JSON
+        render result
+    }
+
+}
+
+class CountryCommand {
+    Long id
+    String iso2
+    String name
+    String printablename
+    String iso3
+    Long numcode
+    Boolean status = true
+
+    static constraints = {
+        name nullable: false, validator: { name, countryObj ->
+            def id = countryObj.id as Long
+            if (id == null) {
+                def countryName = Country.findByNameAndStatus(name, true)
+                if (countryName) {
+                    return 'coreBanking.setting.country.name.unique'
+                }
+
+            } else {
+                def countryName = Country.withCriteria {
+                    not { 'in'("id", [countryObj.id]) }
+                    and {
+                        eq('name', name)
+                        eq('status', true)
+                    }
+                }
+                if (countryName.size() > 0) {
+                    return 'coreBanking.setting.country.name.unique'
+                }
+            }
+        }
+        printablename nullable: false, validator: { printableName, countryObj ->
+            def id = countryObj.id as Long
+            if (id == null) {
+                def counPrintName = Country.findByPrintablenameAndStatus(printableName, true)
+                if (counPrintName) {
+                    return 'coreBanking.setting.country.printableName.unique'
+                }
+            } else {
+                def counPrintName = Country.withCriteria {
+                    not { 'in'('id', [countryObj.id]) }
+                    and {
+                        eq('printablename', printableName)
+                        eq('status', true)
+                    }
+                }
+                if (counPrintName.size() > 0) {
+                    return 'coreBanking.setting.country.printableName.unique'
+                }
+            }
+        }
+        numcode nullable: false, validator: { numcode, countryObj ->
+            def id = countryObj.id as Long
+            if (id == null) {
+                def counNumCode = Country.findByNumcodeAndStatus(numcode, true)
+                if (counNumCode) {
+                    return 'coreBanking.setting.country.numberCode.unique'
+                }
+            } else {
+                def counNumCode = Country.withCriteria {
+                    not { 'in'('id', [countryObj.id]) }
+                    and {
+                        eq('numcode', numcode)
+                        eq('status', true)
+                    }
+                }
+                if (counNumCode.size() > 0) {
+                    return 'coreBanking.setting.country.numberCode.unique'
+                }
+            }
+        }
+
+    }
+
+}
+

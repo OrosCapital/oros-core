@@ -1,0 +1,11 @@
+package com.gsl.core.banking
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: gsl
+ * Date: 5/15/14
+ * Time: 3:11 PM
+ * To change this template use File | Settings | File Templates.
+ */
+class VendorService {
+}

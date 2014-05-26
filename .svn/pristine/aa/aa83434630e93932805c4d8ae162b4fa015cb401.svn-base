@@ -1,0 +1,80 @@
+<html>
+<head></head>
+<body>
+<div class="row">
+    <g:form name="savingsProductOver" id="savingsProductOver" method="post" role="form" class="form-horizontal">
+        <div class="col-md-12">
+            <fieldset>
+                <legend class="blue"><small><g:message code="coreBanking.saving.product.overdraft.fixed.legend" default="Fixed overdraft fees"/></small></legend>
+                <g:render template='/coreBanking/settings/product/savings/fixedFees'/>
+            </fieldset>
+        </div>
+        %{-- Agio fees --}%
+        <div class="col-md-12">
+                <fieldset>
+                    <legend class="blue"><small><g:message code="coreBanking.saving.product.overdraft.agio.legend" default="Agio fees"/></small></legend>
+                    <g:render template='/coreBanking/settings/product/savings/agioFees'/>
+                </fieldset>
+        </div>
+        <div class="clearfix">
+            <div class="col-md-offset-3 col-md-9">
+                <input type="hidden" name="templateNo" value="3" />
+                <g:hiddenField name="productId" value="${productId}"></g:hiddenField>
+                <button class="btn btn-info" type="submit" id="savingProducts"><i class="icon-ok bigger-110"></i>
+                    <g:if test="${savingsProduct?.id}"><g:message code="default.button.update.label" default="Update"/></g:if>
+                    <g:else><g:message code="default.button.submit.label" default="Submit"/></g:else></button>
+                %{--<input type="submit" name="save" value="Submit" /> --}%
+                <button class="btn" type="reset"><i class="icon-undo bigger-110"></i>
+                    <g:message code="default.button.reset.label" default="Reset"/>
+                </button>
+            </div>
+        </div>
+    </g:form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function (){
+        $('#savingsProductOver').validate({
+            errorElement: 'div',
+            errorClass: 'help-block',
+            focusInvalid: false,
+
+            invalidHandler: function (event, validator) { //display error alert on form submit
+                $('.alert-danger', $('.depositForm')).show();
+            },
+
+            highlight: function (e) {
+                $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+            },
+
+            success: function (e) {
+                $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+                $(e).remove();
+            },
+            submitHandler: function (form) {
+                $.ajax({
+                    type: 'post',
+                    data: jQuery("#savingsProductOver").serialize(),
+                    url: "${createLink(controller:'product', action: 'saveOver')}",
+                    success: function (data, textStatus) {
+                        $("#page-content").html(data);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                    }
+                });
+            }
+
+        });
+    })
+</script>
+</body>
+</html>
+
+    %{--</div> --}%%{-- main 12 md.xs--}%
+
+
+%{--</div>--}%
+
+
+

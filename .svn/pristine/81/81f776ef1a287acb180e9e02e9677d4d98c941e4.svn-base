@@ -1,0 +1,327 @@
+<%@ page import="com.gsl.oros.core.banking.settings.Bank" %>
+<html>
+<head></head>
+
+<body>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue widget-header-flat"><h5 class="lighter">Other Bank Information</h5></div>
+            <div class="widget-body">
+                <div class="widget-main no-padding">
+                    <form name="accountOpenOtherBankInfoForm" id="accountOpenOtherBankInfoForm" class="form-horizontal">
+                        <input type="hidden" name="account" value="${saveAccObj?.id}">
+                        <input type="hidden" name="id" id="accOtherBankId" value="">
+                        <input type="hidden" name="row" id="row" value="">
+                        <fieldset>%{--saveAccObj--}%
+                        <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="otherBank" class="col-sm-4 control-label no-padding-right">Bank Name</label>
+                                <div class="col-sm-8 col-xs-8">
+                                    <g:select id="otherBank" name='bank' class="form-control" required=""
+                                              noSelection="${['': 'Select Bank...']}"
+                                              from='${Bank.list(sort: 'name')}' value=""
+                                              optionKey="id" optionValue="name">
+                                    </g:select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="obBranch" class="col-sm-4 control-label no-padding-right">Branch</label>
+
+                                <div class="col-sm-8 col-xs-8">
+                                    <g:select id="obBranch" name='branch' class="form-control" required=""
+                                              noSelection="${['': 'Select branch...']}"
+                                              from='' value=""
+                                              optionKey="id" optionValue="name">
+                                    </g:select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right" for="otherBankSortCode">Sort Code</label>
+
+                                <div class="col-sm-8 col-xs-8">
+                                    <div class="clearfix">
+                                        <input id="otherBankSortCode" class="form-control" type="text" name="otherBankSortCode"
+                                               placeholder="Sort Code" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Sort Code'"
+                                               required>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right" for="accountTitle">Account Title</label>
+
+                                <div class="col-sm-8 col-xs-8">
+                                    <div class="clearfix">
+                                        <input id="accountTitle" class="form-control" type="text" name="accountTitle"
+                                               placeholder="Title of the Account" onfocus="this.placeholder = ''"
+                                               onblur="this.placeholder = 'Account Title'" required>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right" for="otherBankAcNo">Account No</label>
+
+                                <div class="col-sm-8 col-xs-8">
+                                    <div class="clearfix">
+                                        <input id="otherBankAcNo" class="form-control" type="text" name="otherBankAcNo"
+                                               placeholder="Account No" onfocus="this.placeholder = ''"
+                                               onblur="this.placeholder = 'Account No'"
+                                               required>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right" for="otherBankType">Type</label>
+
+                                <div class="col-sm-8 col-xs-8">
+                                    <div class="clearfix">
+                                        <input id="otherBankType" class="form-control" type="text" name="otherBankType"
+                                               placeholder="Type"
+                                               onfocus="this.placeholder = ''" onblur="this.placeholder = 'Type'" required>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12 col-xs-12 pull-right" style="float: right">
+                                    <button type="submit" name="addOtherBankAc" id="addOtherBankAc" class="btn btn-info btn-sm" value="">
+                                        <span class="glyphicon glyphicon-plus"></span> Add
+                                    </button>
+                                </div>
+                            </div>
+
+                            %{--<div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right" for="otherBankBranch">Branch</label>
+
+                                <div class="col-sm-8 col-xs-8">
+                                    <div class="clearfix">
+                                        <input id="otherBankBranch" class="form-control" type="text" name="otherBankBranch"
+                                               placeholder="Branch" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Branch'" required>
+                                    </div>
+
+                                </div>
+                            </div>--}%
+
+                        </div>
+
+                        </fieldset>
+
+                        %{--<div class="clearfix form-actions">
+                            <div class="col-md-12">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="icon-ok bigger-110"></i>Submit</button><button class="btn" type="reset">
+                                    <i class="icon-undo bigger-110"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>--}%
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="space-2"></div>
+<div class= "row" id="accountOtherBankListDiv">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="widget-box">
+            <div class="widget-header widget-header-blue"><h5 class="lighter">Other Bank Information List</h5></div>
+            <div class="widget-body">
+                <div class="widget-main no-padding">
+                    <table id="account-Other-Bank-tbl" class="table table-bordered table-striped table-hover table-condensed ">
+                        <thead>
+                        <tr>
+                            <th>Bank Name</th>
+                            <th>Branch</th>
+                            <th>Account No.</th>
+                            <th>Account Title</th>
+                            <th>Type</th>
+                            <th>Sort Code</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="otherBankAccountTableId">
+                        <g:each in="${saveAccObj?.accOtherBank}" var="otherBank" status="i">
+
+                            <tr>
+                                <td id="bank">${otherBank.bank.name}</td>
+                                <td id="branch">${otherBank.branch.name}</td>
+                                <td id="accountNo">${otherBank.otherBankAcNo}</td>
+                                <td id="accountName">${otherBank.accountTitle}</td>
+                                <td id="type">${otherBank.type}</td>
+                                <td id="sortCode">${otherBank.sortCode}</td>
+
+
+                                <td class="actions ">
+                                    <div class="btn-group">
+
+                                        <a class="btn btn-sm" href="" id="${otherBank.id}" account="${saveAccObj?.id}" title="Edit">
+                                            <i class="icon-circle-arrow-down orange"></i>
+                                        </a>
+
+                                        <a class="btn btn-sm delete btn-danger otherBankAccount-delete-link" onclick="return confirm('Are you sure delete Other Bank Account Information?')"
+                                           href="" id="${otherBank.id}" retailAccount = "${saveAccObj?.id}"
+                                           title="Delete"><i class="glyphicon glyphicon-remove "></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </g:each>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#accountOpenOtherBankInfoForm').validate({
+            errorPlacement: function (error, element) {
+            },
+            focusInvalid: false,
+            rules: {
+                accountTitle: {
+                    required: true
+                },
+                otherBankAcNo: {
+                    digits: true,
+                    required: true
+                },
+                otherBankBranch: {
+                    required: true
+                },
+                otherBankType: {
+                    required: true
+                },
+                otherBankSortCode: {
+                    required: true
+                }
+            },
+            invalidHandler: function (event, validator) { //display error alert on form submit
+                $('.alert-danger', $('#accountOpenOtherBankInfoForm')).show();
+            },
+
+            highlight: function (e) {
+                $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+            },
+
+            success: function (e) {
+                $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+                $(e).remove();
+            },
+            unhighlight: function (e) { // <-- fires when element is valid
+                $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+            }
+        });
+
+        var otherBankTable = $('#account-Other-Bank-tbl').DataTable({
+            "sDom": " ", //<'row'<'col-md-4'><'col-md-4'><'col-md-4'f>r>t<'row'<'col-md-4'l><'col-md-4'i><'col-md-4'p>> ,
+            "bAutoWidth": true,
+            "aoColumns": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                { "bSortable": false }
+            ]
+        });
+
+        $("#accountOpenOtherBankInfoForm").submit(function (e) {
+            if (!$("#accountOpenOtherBankInfoForm").valid()) return false;
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "${createLink(controller: "accountOpen",action: "otherBankAccInfoSave")}",
+                data: $(this).serialize(),
+                success: function (data) {
+                    if(data.isError == false){
+                        if(data.add==true){
+                            otherBankTable.row.add( [
+                                data.bank,
+                                data.accountOtherBank.otherBankAcNo,
+                                data.accountOtherBank.accountTitle,
+                                data.branch,
+                                data.accountOtherBank.type,
+                                data.accountOtherBank.sortCode,
+                                "<div class='btn-group'><a class='btn btn-sm otherBankAccount-edit-link' href='' id="+data.accountOtherBank.id+" title='Edit'><i class='icon-circle-arrow-down orange'></i></a><a class='btn btn-sm delete btn-danger otherBankAccount-delete-link' href='' id="+data.accountOtherBank.id+" title='Delete'><i class='glyphicon glyphicon-remove'></i></a></div>"
+                            ] ).draw();
+
+                            $(':input','#retailOtherBankAccountInformationForm').not(':button, :hidden').val('');
+
+                            var success = '<div class="alert alert-success">';
+                            success += '<i class="icon-bell green"> <b>'+ data.message +'</b> </i> <a class="close" data-dismiss="alert">×</a>';
+                            success += '</div>';
+                            $('.successMsg').html(success);
+                        }
+                        else if(data.update == true){
+                            var row = data.row;
+                            $('#retail-Other-Bank-tbl').dataTable().fnUpdate( [
+                                data.bank,
+                                data.accountOtherBank.accountNo,
+                                data.accountOtherBank.accountName,
+                                data.branch,
+                                data.accountOtherBank.type,
+                                data.accountOtherBank.sortCode,
+                                "<div class='btn-group'><a class='btn btn-sm otherBankAccount-edit-link' href='' id="+data.accountOtherBank.id+" title='Edit'><i class='icon-circle-arrow-down orange'></i></a><a class='btn btn-sm delete btn-danger otherBankAccount-delete-link' href='' id="+data.accountOtherBank.id+" title='Delete'><i class='glyphicon glyphicon-remove'></i></a></div>"
+                            ], row );
+
+                            $(':input,:hidden','#retailOtherBankAccountInformationForm').not('#retailAccount').val('');
+
+                            $('#addOtherBankAccount').html('<span class="glyphicon glyphicon-plus"></span> Add Bank Account');
+
+                            var success = '<div class="alert alert-success">';
+                            success += '<i class="icon-bell green"> <b>'+ data.message +'</b> </i> <a class="close" data-dismiss="alert">×</a>';
+                            success += '</div>';
+                            $('.successMsg').html(success);
+
+                        }
+                    }
+
+                    else{
+                        var error = '<div class="alert alert-danger">';
+                        error += '<i class="icon-bell red"> <b>'+ data.message +'</b> </i> <a class="close" data-dismiss="alert">×</a>';
+                        error += '</div>';
+                        $('.successMsg').html(error);
+                    }
+                },
+                failure: function (data) {
+                }
+            });
+            return false
+            e.preventDefault();
+        });
+
+        $("#otherBank").change(function () {
+            var bankId = $(this).val();
+            $.ajax({
+                url: "${createLink(controller: 'retailClient', action: 'fetchBranch')}?id=" + bankId,
+                type: 'post',
+                success: function (data) {
+                    $("#obBranch").html(data);
+                }
+            })
+        });
+
+        jQuery.validator.messages.required = "";
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+package com.gsl.oros.core.banking.operation
+
+import com.gsl.oros.core.banking.accountHolder.AccountHolder
+
+class AccountIntroducer {
+    String relation
+    static belongsTo = [accountHolder : AccountHolder]
+
+    static constraints = {
+    }
+}

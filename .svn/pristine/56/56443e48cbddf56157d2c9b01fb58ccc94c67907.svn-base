@@ -1,0 +1,129 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: rabin
+  Date: 5/19/14
+  Time: 5:08 PM
+  To change this template use File | Settings | File Templates.
+--%>
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+    <title></title>
+</head>
+
+<body>
+<div class="widget-box">
+    <div class="widget-header">
+        <h4 class="smaller"><g:message
+                code="coreBanking.operation.cashWithdrawal.title" default="Cash Withdrawal"/></h4>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main">
+            <div class="row">
+                <g:form class="form-horizontal" id="cashWithdrawal" name="cashWithdrawal"
+                        method="post" role="form" url="[action: 'save', controller: 'cashWithdrawal']"
+                        onsubmit="return false;">
+
+                    <div class="col-xs-12">
+                        <div class="col-xs-6">
+
+                            <div class="form-group ${hasErrors(bean: cashWithdrawal, field: 'name', 'has-error')}">
+                                <label for="accountNo"
+                                       class="control-label col-xs-12 col-sm-5 no-padding-right"><g:message
+                                        code="coreBanking.operation.cashWithdrawal.accountNo.label"
+                                        default="Account Number"/><span class="red">*</span></label>
+
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="clearfix">
+                                        <input type="text" id="accountNo" name="accountNo" value=""
+                                               placeholder="Account Number">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label"><g:message
+                                        code="coreBanking.operation.cashWithdrawal.fullWithdrawal.label"
+                                        default="Is this a full withdrawal ?"/></label>
+
+                                <div class="radio">
+                                    <label>
+                                        <input name="yes" type="fullWithdrawal" class="ace" />
+                                        <span class="lbl"> radio option 1</span>
+                                    </label>
+                                </div>
+
+                                <div class="radio">
+                                    <label>
+                                        <input name="no" type="radio" class="ace" />
+                                        <span class="lbl"> radio option 2</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6">
+
+                            <div class="center">
+                                <span class="profile-picture center">
+                                    <img class="editable img-responsive" alt="Alex's Avatar" id="avatar2"
+                                         src="${resource(dir: '/images/', file: 'default-photo.png')}" width="100px"
+                                         height="100px"/>
+                                </span>
+                            </div>
+
+                            <div class="profile-user-info profile-user-info-striped">
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Account Name</div>
+
+                                    <div class="profile-info-value">
+                                        <span class="editable" id="accountName">alexdoe</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Branch Name</div>
+
+                                    <div class="profile-info-value">
+                                        <span class="editable" id="branchName">38</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Location</div>
+
+                                    <div class="profile-info-value">
+                                        <i class="icon-map-marker light-orange bigger-110"></i>
+                                        <span class="editable" id="country">Netherlands</span>
+                                        <span class="editable" id="city">Amsterdam</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Mobile Number</div>
+
+                                    <div class="profile-info-value">
+                                        <span class="editable" id="mobileNo">01254841548</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Email Id</div>
+
+                                    <div class="profile-info-value">
+                                        <span class="editable" id="emailId">imran@gmail.com</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </g:form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

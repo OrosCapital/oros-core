@@ -1,0 +1,19 @@
+package com.gsl.oros.core.banking.operation
+
+import com.gsl.oros.core.banking.settings.Bank
+import com.gsl.oros.core.banking.settings.Branch
+
+class AccountOtherBank {
+
+    String otherBankAcNo
+    String accountTitle
+    String type
+    String sortCode
+
+    boolean status = true
+
+
+    static belongsTo = [bank:Bank, branch:Branch]
+
+    static constraints = {}
+}

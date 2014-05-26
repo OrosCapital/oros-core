@@ -1,0 +1,12 @@
+package com.gsl.oros.core.banking.operation
+
+class CashWithdrawalController {
+
+    def index() {
+        render(view: '/coreBanking/settings/operation/cashWithdrawal/cashWithdrawal')
+    }
+
+    def save(){
+
+    }
+}
