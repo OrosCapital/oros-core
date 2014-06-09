@@ -7,7 +7,6 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 @Transactional
 class CurrencyService {
     def springSecurityService
-    def webInvocationPrivilegeEvaluator
 
     static final String[] sortColumns = ['id','name','abbreviation','symbol','country','hundredName']
 

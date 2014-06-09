@@ -1,0 +1,19 @@
+package com.gsl.uma.security
+
+import grails.converters.JSON
+
+class HierarchyController {
+
+    def index() {
+        render(template: '/hierarchy/hierarchy');
+    }
+
+    def assignRank(){
+        println params
+        if (request.method == "POST"){
+            def jsonObj = request.JSON
+            def result = [message: "Your Requested Amount Exceed Your Balance"]
+            render result as JSON
+        }
+    }
+}

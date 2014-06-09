@@ -1,0 +1,289 @@
+
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+  <title></title>
+    <style>
+
+    textarea {
+        resize: none;
+    }</style>
+</head>
+<body>
+
+<g:hasErrors bean="${saveLoan}">
+    <div class='alert alert-success '>
+        <ul>
+            <g:eachError var="err" bean="${saveLoan}">
+                <li><g:message error="${err}" /></li>
+            </g:eachError>
+        </ul>
+    </div>
+</g:hasErrors>
+<g:form name="loanForm" id="loanForm" method="post" role="form" class="form-horizontal" url="[controller:'loan', action:'save']" onsubmit="return false;">
+    <g:hiddenField name="id" value="${saveLoan?.id}"/>
+    <div class="row">
+    <div class="col-md-12">
+    <div class="col-md-7">
+            <div class="form-group ${hasErrors(bean: saveLoan, field: 'accountNo', 'has-error')}" id="accountNoDiv">
+                <label for="accountNo" class="col-md-4 control-label"><g:message code="loan.loanApplication.label.accNo" default=" Account no."/>
+   <span class="red">*</span>
+    </label>
+
+    <div class="col-md-6">
+        <g:textField name="accountNo" id="accountNo" placeholder="Account No." onfocus="this.placeholder = ''" onblur="this.placeholder = 'Account No.'" class="form-control" value="${saveLoan?.accountNo}"/>
+    </div>
+                <span id="errorInAccount"></span>
+    </div>
+
+        <div class="form-group ${hasErrors(bean: saveLoan, field: 'amount', 'has-error')}">
+            <label for="amount" class="col-md-4 control-label"><g:message code="loan.loanApplication.label.amount" default="Amount Requested"/>
+                <span class="red">*</span>
+            </label>
+
+            <div class="col-md-6">
+                <div class="clearfix">
+                <g:textField name="amount" id="amount" placeholder="Amount" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Amount'" class="form-control" value="${saveLoan?.amount}"/>
+            </div>
+           </div>
+        </div>
+        <div class="form-group ${hasErrors(bean: saveLoan, field: 'amountInWord', 'has-error')}" id="amountInWordDiv">
+            <label for="amountInWord" class="col-md-4 control-label"><g:message code="loan.loanApplication.label.amountInWord" default="Amount in words"/></label>
+            <div class="col-md-6">
+                <div class="clearfix">
+                    <span class="control-label" name="amountInWord" id="amountInWord">None</span>
+                </div>
+        </div>
+            </div>
+        <div class="form-group ${hasErrors(bean: saveLoan, field: 'purpose', 'has-error')}">
+            <label for="purpose" class="col-md-4 control-label"><g:message code="loan.loanApplication.label.purpose" default="Purpose of Loan"/>
+
+            </label>
+
+            <div class="col-md-6">
+                <div class="clearfix">
+                <g:textArea name="purpose" id="purpose" placeholder="Purpose of Loan" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Purpose of Loan'" class="form-control" value="${saveLoan?.purpose}"/>
+            </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-md-4 control-label"><g:message code="loan.loanApplication.label.loanDuration" default="Loan Duration"/>
+                <span class="red">*</span>
+            </label>
+
+            <div class="col-md-8 form-group">
+
+                <div class="col-md-6 ${hasErrors(bean: saveLoan, field: 'durationStart', 'has-error')}">
+                <div class='input-append date input-group' id="durationStart">
+                    <label for="durationStart"></label>
+                    <input type="date" name="durationStart" class="form-control datepicker" data-date-format="dd-mm-yyyy" value="${saveLoan?.durationStart?.format("dd/MM/yyyy")}"/>
+                    <span class="input-group-addon add-on"><i class="icon-calendar"></i></span>&nbsp;&nbsp;&nbsp;to
+                    %{--<div class="">to</div>--}%
+                </div>
+                </div>
+                <div class="col-md-5 ${hasErrors(bean: saveLoan, field: 'durationEnd', 'has-error')}">
+                <div class='input-append date input-group' id="durationEnd">
+                    <label for="durationEnd"></label>
+                    <input type="date" name="durationEnd" class="form-control datepicker" data-date-format="dd-mm-yyyy" value="${saveLoan?.durationEnd?.format("dd/MM/yyyy")}"/>
+                    <span class="input-group-addon add-on"><i class="icon-calendar"></i></span>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="form-group ${hasErrors(bean: saveLoan, field: 'income', 'has-error')}">
+            <label for="income" class="col-md-4 control-label"><g:message code="loan.loanApplication.label.income" default="Source of Income"/>
+                <span class="red">*</span>
+            </label>
+
+            <div class="col-md-6">
+                <div class="clearfix">
+                <g:textField name="income" id="income" placeholder="Source of Income" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Source of Income'" class="form-control" value="${saveLoan?.income}"/>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-10 col-md-2">
+
+            <g:if test='${saveLoan?.id!=null}'>
+                <button class="btn btn-success" type="submit" name="updateLoan" id="updateLoan"><g:message code="loan.loanApplication.button.update" default="Update"/></button>
+            </g:if>
+            <g:else>
+                <button class="btn btn-success" type="submit" name="saveLoan" id="saveLoan"><g:message code="loan.loanApplication.button.save" default="Save"/></button>
+            </g:else>
+
+
+        </div>
+    </div>
+</g:form>
+ <script type="text/javascript">
+
+     var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+     var b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+     function inWords(num) {
+         if ((num = num.toString()).length > 9) return  $("#amountInWord").text('Overflow');
+         var number = num.replace('.00', '');
+         number = number.replace(/,/g, '');
+
+         var n = ('000000000' + number).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+         if (!n) return;
+         var str = '';
+         str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Crore ' : '';
+         str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Lakh ' : '';
+         str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'Thousand ' : '';
+         str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'Hundred ' : '';
+         str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'Only ' : '';
+         $('span#amountInWord').text(str);
+     }
+     $("#amount").focusout(function () {
+         $("#amountInWord").text('None');
+         var amount = $("#amount").val();
+         if (amount == 0.00) {
+             $("#amountInWord").text('None');
+             return false;
+         } else{
+
+             var convertedAmount = parseFloat(amount.replace(/[^\d\.]/g, ''));
+
+             inWords(convertedAmount);
+         }
+     });
+     $("#accountNo").blur(function(){
+         var accountNo = $(this).val();
+         $.ajax({
+             url:"${createLink(controller: 'loan', action: 'checkAccountNo')}",
+             type:'post',
+             dataType:'json',
+             data:{accountNo:accountNo},
+             success:function(data){
+                 if(data.result!=null){
+//                     $("input#clientId").val(""+data.result.id+"");
+//                     $("input#name").val(""+data.result.name+"");
+//                     $("input#address").val(""+data.result.address+"");
+//                     $("input#contactNo").val(""+data.result.contactNo+"");
+                     $("#errorInAccount").removeClass('help-block').hide();
+                     $("#accountNoDiv").removeClass('has-error');
+                     $('#saveLoan').attr('disabled', false);
+                 }else{
+                     $("#errorInAccount").addClass('help-block').text("Account No. Not Found!").show();
+                     $("#accountNoDiv").addClass('has-error');
+                     $('#saveLoan').attr('disabled', true);
+//                     $("input#clientId").val("");
+//                     $("input#name").val("");
+//                     $("input#address").val("");
+//                     $("input#contactNo").val("");
+                 }
+             }
+         })
+     });
+
+     var dateF = "${dateFormat}";
+     var dateM = "${dateMask}" ;
+     var getDecimal = "${decimalSep}";
+
+     $('#amount').autoNumeric("init", {mDec: getDecimal});
+
+     $(".datepicker").inputmask(dateM);
+
+     $("#durationStart").datepicker({
+         format: dateF
+     }).on('changeDate', function (ev) {
+                 $(this).datepicker('hide');
+             });
+
+     $("#durationEnd").datepicker({
+         format: dateF
+     }).on('changeDate', function (ev) {
+                 $(this).datepicker('hide');
+             });
+     $('#loanForm').validate({
+
+         errorElement: 'div',
+         errorClass: 'help-block',
+         focusInvalid: false,
+         rules: {
+             accountNo: {
+                 required: true
+
+             },
+             amount: {
+                 required: true
+
+             },
+             purpose: {
+                 required: false
+
+             },
+             durationStart:{
+                 required: true
+             },
+             durationEnd:{
+                 required: true
+             },
+             income: {
+                 required: true
+
+             }
+         } ,
+         messages: {
+             accountNo: {
+                 required: " "
+
+             },
+             amount: {
+                 required: " "
+
+             },
+             purpose: {
+                 required: " "
+
+             },
+             durationStart:{
+                 required: " "
+             },
+             durationEnd:{
+                 required: " "
+             },
+             income: {
+                 required: " "
+
+             }
+         },
+         errorPlacement: function(error, element){
+             return true
+         },
+         invalidHandler: function (event, validator) {
+             $('.alert-danger', $('.loginForm')).show();
+         },
+
+         highlight: function (e) {
+             $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+         },
+
+         success: function (e) {
+             $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+             $(e).remove();
+         },
+         submitHandler: function (form) {
+             $.ajax({
+                 url:"${createLink(controller: 'loan', action: 'save')}",
+                 type:'post',
+                 data: $("#loanForm").serialize(),
+                 success:function(data){
+                     $('#page-content').html(data);
+                 },
+                 failure:function(data){
+                 }
+             })
+
+         }
+     }) ;
+
+ </script>
+</body>
+</html>

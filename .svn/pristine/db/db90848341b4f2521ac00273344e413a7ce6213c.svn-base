@@ -1,0 +1,12 @@
+package com.gsl.oros.core.banking.operation.bankDraft
+import com.gsl.oros.core.banking.settings.Address
+
+class BankDraft {
+    String acholderName
+    String bankName
+    String branchName
+    Double amount
+    static constraints = {
+
+    }
+}

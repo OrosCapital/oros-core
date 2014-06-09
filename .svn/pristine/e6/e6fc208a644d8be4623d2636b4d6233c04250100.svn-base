@@ -1,0 +1,48 @@
+<html>
+<head></head>
+<body>
+<h3>Home Loan</h3><hr>
+<p>
+    Loan amount of 4,00,000 - 20,000,000.
+    Maximum loan amount of 70% of the property valuation, inclusive of registration cost.
+    Financing for the registration cost.
+    Clubbing of income amongst spouse, father and son/daughter, mother and son/daughter is possible.
+    Competitive interest rates on a monthly reducing balance.
+    Loan tenure of 5 - 25 years (prior to borrowers age reaching 60 years).
+    The age of the property must not exceed 20 years of age.
+    Apartments under construction is also applicable for Home Loan facility.
+    Partial or early settlement facilities.
+    No personal guarantee or cash security.
+</p>
+<sec:access controller="loan" action="create">
+    <div class="clearfix">
+        <div class="col-md-offset-9 col-md-3">
+        <span class="navbar-right">
+        <a href="${g.createLink(controller: 'loan', action: 'create')}"
+           id="createLoan" class="btn btn-success btn-sm"><g:message code="default.paginate.next" default="Next"/>
+       </a>
+        </span>
+        </div>
+    </div>
+</sec:access>
+</body>
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('#createLoan').click(function (e) {
+            var control = this;
+            var url = $(control).attr('href');
+            jQuery.ajax({
+                type: 'POST',
+                url: url,
+                success: function (data) {
+                    $('#page-content').html(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                }
+            });
+            e.preventDefault();
+        });
+    });
+</script>
+</html>

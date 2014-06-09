@@ -1,0 +1,39 @@
+<g:if test="${evidenceAttach}">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <table class="table table-bordered table-striped table-hover table-condensed" id="attachmentListTable">
+                <thead>
+                <tr>
+                    <th><g:message code="agent.attachmentList.caption" default="Caption"/></th>
+                    <th><g:message code="agent.attachmentList.fileName" default="File Name"/></th>
+                    <th><g:message code="agent.attachmentList.description" default="Description"/></th>
+                    <th><g:message code="agent.attachmentList.type" default="Type"/></th>
+                    <th><g:message code="agent.attachmentList.size" default="Size"/></th>
+                    <th><g:message code="default.action.label" default="Action"/></th>
+                </tr>
+                </thead>
+                <tbody>
+                <g:each in="${evidenceAttach?.orosAttachment}" var="attachment">
+
+                    <tr>
+                        <td id="attCaption">${attachment.caption}</td>
+                        <td id="attName">${attachment.originalName}</td>
+
+                        <td id="attDescription">${attachment.description}</td>
+
+                        <td id="attType">${attachment.type}</td>
+                        <td id="attSize">${attachment.size}</td>
+
+
+                        <td class="actions ">
+
+                        </td>
+                    </tr>
+                </g:each>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</g:if>

@@ -1,0 +1,252 @@
+<%@ page import="com.gsl.oros.core.banking.settings.State; com.gsl.oros.core.banking.settings.Country" %>
+<html>
+<head>
+    <style>
+    .form-control, label, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{font-size: 12px;}
+    label{max-width: 150px;}
+    </style>
+    <title>Draft Owner's Bank Account Info</title>
+</head>
+<body>
+
+<g:form name="showPaymentDetailForm" id="showPaymentDetailForm" method="post" role="form" class="form-horizontal" url="[controller:'vendor', action:'saveVendorGeneralAddress']" onsubmit="return false;">
+    <g:hiddenField name="paymentId" id="paymentId" value="${draftPayment?.id}"/>
+    <div class="row" id="cashPayment">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class='alert alert-success hidden' id="errorInTransaction">
+                    <i class="icon-bell green">
+                        <b id="emessage"></b>
+                    </i>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        %{--<g:message code="coreBanking.operation.bankDraft.ownerInfo.paidByAcNo" default="Paid by A/C No"/>--}%
+                        %{--<span class="red">*</span>--}%
+                        <span class="blue">Payment Type:</span>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <label>
+                                ${draftPayment?.paymentType}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <span class="blue">Name:</span>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <label>
+                                ${draftPayment?.nameForCash}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <span class="blue">Phone No:</span>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <label>
+                                ${draftPayment?.phoneNo}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row" id="acPayment">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="col-xs-6 col-sm-6 col-md-6">
+
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        %{--<g:message code="coreBanking.operation.bankDraft.ownerInfo.paidByAcNo" default="Paid by A/C No"/>--}%
+                        %{--<span class="red">*</span>--}%
+                        <span class="blue">Payment Type:</span>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <label>
+                                ${draftPayment?.paymentType}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        %{--<g:message code="coreBanking.operation.bankDraft.ownerInfo.paidByAcNo" default="Paid by A/C No"/>--}%
+                        %{--<span class="red">*</span>--}%
+                        <span class="blue">Name:</span>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <label>
+                                ${draftPayment?.nameForAc}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+
+                <div class="form-group" id="showAmountDiv">
+                    <label class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <span class="blue">Amount:</span>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <label id="showAmount">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group" id="showAmountInWordDiv">
+                <span class="blue">
+                <label for="showAmountInWord" class="col-sm-4 col-xs-6 control-label no-padding-right"><g:message code="loan.loanApplication.label.amountInWord" default="Amount in words"/>:</label>
+                </span>
+                <div class="col-sm-8 col-xs-12">
+                <div class="clearfix">
+                    <span class="control-label" name="amountInWord" id="showAmountInWord">None</span>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-10 col-md-2">
+            <button class="btn btn-primary btn-sm" type="submit" name="processDraftRequest" id="processDraftRequest">Process</button>
+        </div>
+    </div>
+
+</g:form>
+
+<script type="text/javascript">
+
+    jQuery(function ($) {
+        $('#cashPayment').hide();
+        $('#acPayment').hide();
+        $('#showAmountDiv').hide();
+        $('#showAmountInWordDiv').hide();
+        var getDecimal = "${decimalSep}";
+        var paymentType = '${draftPayment?.paymentType}';
+        var amount = "${draftPayment?.amount}";
+        if(paymentType == "Cash") {
+            $('#showAmount').text(amount);
+            $('#showAmount').autoNumeric("init", {mDec: getDecimal});
+            if (amount == 0.00) {
+                $("#showAmountInWord").text('None');
+                return false;
+            } else{
+                var number = amount.replace('.00', '');
+                number = number.replace(/,/g, '');
+                var balance = toWords(parseInt(number));
+                $("#showAmountInWord").text(balance);
+            }
+            $('#showAmountDiv').show();
+            $('#showAmountInWordDiv').show();
+            $('#cashPayment').show();
+            $('#acPayment').hide();
+        }
+        else if(paymentType == "A/C"){
+            $('#showAmount').text(amount);
+            $('#showAmount').autoNumeric("init", {mDec: getDecimal});
+            if (amount == 0.00) {
+                $("#showAmountInWord").text('None');
+                return false;
+            } else{
+                var number = amount.replace('.00', '');
+                number = number.replace(/,/g, '');
+                var balance = toWords(parseInt(number));
+                $("#showAmountInWord").text(balance);
+            }
+            $('#showAmountDiv').show();
+            $('#showAmountInWordDiv').show();
+            $('#cashPayment').hide();
+            $('#acPayment').show();
+        }
+
+        // Account No. checking here
+
+        $('#showPaymentDetailForm').validate({
+
+            errorElement: 'div',
+            errorClass: 'help-block',
+            focusInvalid: false,
+            rules: {
+
+            } ,
+            messages: {
+
+            },
+            highlight: function (e) {
+                $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+            },
+
+            success: function (e) {
+                $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+                $(e).remove();
+            },
+            errorPlacement: function (error, element) {
+                if(element.is(':checkbox') || element.is(':radio')) {
+                    var controls = element.closest('div[class*="col-"]');
+                    if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+                    else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+                }
+                else if(element.is('.select2')) {
+                    error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+                }
+                else if(element.is('.chosen-select')) {
+                    error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+                }
+                else error.insertAfter(element.parent());
+            },
+            submitHandler: function (form) {
+                var paymentId = $("#paymentId").val();
+                alert(paymentId);
+                $.ajax({
+                    url:"${createLink(controller: 'bankDraft', action: 'processDraftRequest')}",
+                    type:'post',
+                    dataType:'json',
+                    data: {paymentId:paymentId},
+                    success:function(data){
+//                        alert(data.message);
+                            $("#errorInTransaction").removeClass('hidden');
+                            $("#emessage").text(data.message);
+
+                    },
+                    failure:function(data){
+                    }
+                })
+
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

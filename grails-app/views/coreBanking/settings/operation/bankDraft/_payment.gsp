@@ -1,0 +1,361 @@
+<%@ page import="com.gsl.oros.core.banking.settings.State; com.gsl.oros.core.banking.settings.Country" %>
+<html>
+<head>
+    <script src="${resource(dir: 'js/compressed', file: 'toword.js')}"></script>
+    <style>
+    .form-control, label, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{font-size: 12px;}
+    label{max-width: 150px;}
+    </style>
+    <title>Draft Owner's Bank Account Info</title>
+</head>
+<body>
+
+
+
+<g:hasErrors bean="${bankAccountInfo}">
+    <div class='alert alert-success '>
+        <ul>
+            <g:eachError var="err" bean="${bankAccountInfo}">
+                <li><g:message error="${err}" /></li>
+            </g:eachError>
+        </ul>
+    </div>
+</g:hasErrors>
+<g:form name="draftBankAccountInfoForm" id="draftBankAccountInfoForm" method="post" role="form" class="form-horizontal" url="[controller:'bankDraft', action:'savePaymentInfo']" onsubmit="return false;">
+    <g:hiddenField name="draftId" value="${bankDraft?.id}"/>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p>
+                <input class="ace" type="checkbox"  name="paymentType" id="payByCash" value="Cash">
+                &nbsp;<span class="lbl">Cash</span>
+                &nbsp; &nbsp;
+                <input class="ace" type="checkbox"  name="paymentType" id="payByAC" value="A/C">
+                &nbsp;<span class="lbl">From A/C</span>
+            </p>
+        </div>
+    </div>
+    <div class="row" id="byAC">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="col-xs-6 col-sm-6 col-md-6">
+
+                <div class="form-group ${hasErrors(bean: draftPayment, field: 'paidByAcNo', 'has-error')}" id="paidByAccNoDiv">
+                    <label for="paidByAcNo" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <g:message code="coreBanking.operation.bankDraft.ownerInfo.paidByAcNo" default="Paid by A/C No"/><span class="red">*</span>
+                    </label>
+
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <input type="text" class="col-sm-11 col-xs-12" placeholder="Paid by A/C No"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Paid by A/C No'"
+                                   id="paidByAcNo"
+                                   name="paidByAcNo" value="${draftPayment?.paidByAcNo}"/>
+                        </div>
+                        <span id="errorInPaidByAccount"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group ${hasErrors(bean: draftPayment, field: 'nameForAc', 'has-error')}">
+                    <label for="acName" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <g:message code="coreBanking.operation.bankDraft.ownerInfo.name" default="Name"/><span class="red">*</span>
+                    </label>
+
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <input type="text" class="col-sm-11 col-xs-12" placeholder="Name"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name'"
+                                   id="acName"
+                                   name="nameForAc" value="${draftPayment?.nameForAc}"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="byCash">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="col-xs-6 col-sm-6 col-md-6">
+
+                <div class="form-group ${hasErrors(bean: draftPayment, field: 'nameForCash', 'has-error')}">
+                    <label for="cashName" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <g:message code="coreBanking.operation.bankDraft.ownerInfo.name" default="Name"/><span class="red">*</span>
+                    </label>
+
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <input type="text" class="col-sm-11 col-xs-12" placeholder="Name"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name'"
+                                   id="cashName"
+                                   name="nameForCash" value="${draftPayment?.nameForCash}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group ${hasErrors(bean: draftPayment, field: 'nationalID','has-error')}">
+                    <label for="nationalID" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <g:message code="coreBanking.clients.accountHolder.basicInfo.nationalID" default="National ID"/>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <input type="text" class="col-sm-11 col-xs-12" placeholder="National Identification No" onfocus="this.placeholder = ''" onblur="this.placeholder = 'National Identification No'" id="nationalID"
+                                   name="nationalID" value="${draftPayment?.nationalID}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group ${hasErrors(bean: draftPayment, field: 'phoneNo','has-error')}">
+                    <label for="phoneNo" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <g:message code="default.address.phone.label" default="Phone No"/>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <input type="tel" class="col-sm-11 col-xs-12" placeholder="Phone No" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone No'" id="phoneNo"
+                                   name="phoneNo" value="${draftPayment?.phoneNo}"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group ${hasErrors(bean: draftPayment, field: 'amount','has-error')}" id="paymentAmountDiv">
+                    <label for="paymentAmount" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                        <g:message code="coreBanking.operation.bankDraft.ownerInfo.amount" default="Amount"/><span class="red">*</span>
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <div class="clearfix">
+                            <input type="text" class="col-sm-11 col-xs-12" placeholder="Amount" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Amount'" id="paymentAmount"
+                                   name="amount" value="${draftPayment?.amount}"/>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group" id="paymentAmountInWordDiv">
+                <label for="paymentAmountInWord" class="col-sm-4 col-xs-6 control-label no-padding-right"><g:message code="loan.loanApplication.label.amountInWord" default="Amount in words"/></label>
+                <div class="col-sm-8 col-xs-12">
+                    <div class="clearfix">
+                        <span class="control-label" name="amountInWord" id="paymentAmountInWord">None</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-10 col-md-2">
+            <button class="btn btn-primary btn-sm" type="submit" name="saveDraftPaymentInfo" id="saveDraftPaymentInfo">Submit</button>
+        </div>
+    </div>
+
+</g:form>
+
+<script type="text/javascript">
+
+    jQuery(function ($) {
+        $('#byAC').hide();
+        $('#byCash').hide();
+        $('#paymentAmountDiv').hide();
+        $('#paymentAmountInWordDiv').hide();
+        if("${draftPayment?.id}" && "${draftPayment?.paymentType == "Cash"}"){
+            var amount = "${draftPayment?.amount}";
+            $('#paymentAmount').val("${draftPayment?.amount}");
+            $('#paymentAmount').autoNumeric("init", {mDec: getDecimal});
+            $('#paymentAmount').attr('disabled', true);
+            if (amount == 0.00) {
+                $("#paymentAmountInWord").text('None');
+                return false;
+            } else{
+                var number = amount.replace('.00', '');
+                number = number.replace(/,/g, '');
+                var balance = toWords(parseInt(number));
+                $("#paymentAmountInWord").text(balance);
+            }
+            $('#paymentAmountDiv').show();
+            $('#paymentAmountInWordDiv').show();
+            $("#payByAC").attr("checked", false);
+            $("#payByCash").attr("checked", true);
+            $('#byAC').hide();
+            $('#byCash').show();
+        }
+        if("${draftPayment?.id}" && "${draftPayment?.paymentType == "A/C"}"){
+            var amount = "${draftPayment?.amount}";
+            $('#paymentAmount').val("${draftPayment?.amount}");
+            $('#paymentAmount').autoNumeric("init", {mDec: getDecimal});
+            $('#paymentAmount').attr('disabled', true);
+            if (amount == 0.00) {
+                $("#paymentAmountInWord").text('None');
+                return false;
+            } else{
+                var number = amount.replace('.00', '');
+                number = number.replace(/,/g, '');
+                var balance = toWords(parseInt(number));
+                $("#paymentAmountInWord").text(balance);
+            }
+            $('#paymentAmountDiv').show();
+            $('#paymentAmountInWordDiv').show();
+            $("#payByAC").attr("checked", true);
+            $("#payByCash").attr("checked", false);
+            $('#byAC').show();
+            $('#byCash').hide();
+        }
+        var amount = "${bankDraft?.amount}";
+        var getDecimal = "${decimalSep}";
+        $('#payByCash').attr('checked', false).change(function () {
+            if (this.checked) {
+                $("#payByAC").attr("checked", false);
+
+                $('#paymentAmount').val(amount);
+                $('#paymentAmount').autoNumeric("init", {mDec: getDecimal});
+                $('#paymentAmount').attr('disabled', true);
+
+                if (amount == 0.00) {
+                    $("#paymentAmountInWord").text('None');
+                    return false;
+                } else{
+                    var number = amount.replace('.00', '');
+                    number = number.replace(/,/g, '');
+                    var balance = toWords(parseInt(number));
+                    $("#paymentAmountInWord").text(balance);
+                }
+                $('#paymentAmountDiv').show();
+                $('#paymentAmountInWordDiv').show();
+                $('#byCash').show();
+                $('#byAC').hide();
+            }
+        });
+
+        $('#payByAC').attr('checked', false).change(function () {
+            if (this.checked) {
+                $("#payByCash").attr("checked", false);
+                $('#paymentAmount').val(amount);
+                $('#paymentAmount').autoNumeric("init", {mDec: getDecimal});
+                $('#paymentAmount').attr('disabled', true);
+
+                if (amount == 0.00) {
+                    $("#paymentAmountInWord").text('None');
+                    return false;
+                } else{
+                    var number = amount.replace('.00', '');
+                    number = number.replace(/,/g, '');
+                    var balance = toWords(parseInt(number));
+                    $("#paymentAmountInWord").text(balance);
+                }
+                $('#paymentAmountDiv').show();
+                $('#paymentAmountInWordDiv').show();
+                $('#byCash').hide();
+                $('#byAC').show();
+            }
+        });
+
+        // Account No. checking here
+        $("#paidByAcNo").blur(function(){
+            var accountNo = $(this).val();
+            $.ajax({
+                url:"${createLink(controller: 'bankDraft', action: 'checkPaidByAcNo')}",
+                type:'post',
+                dataType:'json',
+                data:{accountNo:accountNo},
+                success:function(data){
+                    if(data.result!=null){
+//                        $("input#name").val(""+data.result.name+"");
+                        $("#errorInPaidByAccount").removeClass('help-block').hide();
+                        $("#paidByAccNoDiv").removeClass('has-error');
+                        $('#saveDraftPaymentInfo').attr('disabled', false);
+                    }else{
+                        $("#errorInPaidByAccount").addClass('help-block').text("Account No Not Found!.").show();
+                        $("#paidByAccNoDiv").addClass('has-error');
+//                        $("input#name").val("");
+                        $("input#amount").val("");
+                        $('#saveDraftPaymentInfo').attr('disabled', true);
+                    }
+                }
+            })
+        });
+
+        $('#draftBankAccountInfoForm').validate({
+
+            errorElement: 'div',
+            errorClass: 'help-block',
+            focusInvalid: false,
+            rules: {
+                paidByAcNo: {
+                    required: true
+                },
+                nameForCash: {
+                    required: true
+                },
+                today: {
+                    required: true
+                },
+                amount: {
+                    required: true
+                }
+            } ,
+            messages: {
+                paidByAcNo: {
+                    required: " "
+                },
+                nameForCash: {
+                    required: " "
+                },
+                today: {
+                    required: " "
+                },
+                amount: {
+                    required: " "
+                }
+            },
+            highlight: function (e) {
+                $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+            },
+
+            success: function (e) {
+                $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+                $(e).remove();
+            },
+            errorPlacement: function (error, element) {
+                if(element.is(':checkbox') || element.is(':radio')) {
+                    var controls = element.closest('div[class*="col-"]');
+                    if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+                    else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+                }
+                else if(element.is('.select2')) {
+                    error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+                }
+                else if(element.is('.chosen-select')) {
+                    error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+                }
+                else error.insertAfter(element.parent());
+            },
+            submitHandler: function (form) {
+                $.ajax({
+                    url:"${createLink(controller: 'bankDraft', action: 'savePaymentInfo')}",
+                    type:'post',
+                    data: $("#draftBankAccountInfoForm").serialize(),
+                    success:function(data){
+                        $('#page-content').html(data);
+                    },
+                    failure:function(data){
+                    }
+                })
+
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

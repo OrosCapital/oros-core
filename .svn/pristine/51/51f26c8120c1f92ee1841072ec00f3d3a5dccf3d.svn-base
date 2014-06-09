@@ -1,0 +1,155 @@
+<%@ page import="com.gsl.oros.core.banking.settings.State; com.gsl.oros.core.banking.settings.Country" %>
+<html>
+<head>
+    <style>
+    .form-control, label, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+        font-size: 12px;
+    }
+
+    label {
+        max-width: 150px;
+    }
+    </style>
+    <title>Account Close Reason</title>
+</head>
+
+<body>
+
+<g:form name="draftBankAccountInfoForm" id="draftBankAccountInfoForm" method="post" role="form" class="form-horizontal"
+        url="[controller: 'vendor', action: 'saveVendorGeneralAddress']" onsubmit="return false;">
+
+    <div class="row">
+
+        <div class="form-group ${hasErrors(bean: accountClose, field: 'preBalance', 'has-error')}">
+            <label for="preBalance" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                Previous Balance<span class="red">*</span>
+            </label>
+
+            <div class="col-sm-8 col-xs-12">
+                <div class="clearfix">
+                    <input type="text" id="preBalance" name="preBalance" value="${accountClose?.preBalance}"
+                           required="" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: accountClose, field: 'chargeApply', 'has-error')}">
+            <label for="chargeApply" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                Charge Apply<span class="red">*</span>
+            </label>
+
+            <div class="col-sm-8 col-xs-12">
+                <div class="clearfix">
+                    <input type="text" id="chargeApply" name="chargeApply" value="${accountClose?.charge}"
+                           required="" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: accountClose, field: 'getBalance', 'has-error')}">
+            <label for="chargeApply" class="col-sm-4 col-xs-6 control-label no-padding-right">
+                Available Balance<span class="red">*</span>
+            </label>
+
+            <div class="col-sm-8 col-xs-12">
+                <div class="clearfix">
+                    <input type="text" id="getBalance" name="getBalance" value="${accountClose?.getBalance}"
+                           required="" readonly>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group" id="reasonForClose">
+            <label for="reasonForClose"
+                   class="col-sm-4 col-xs-4 control-label no-padding-right">Document Collect<span
+                    class="red">*</span></label>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+
+                    <div class="checkbox">
+                        <label>
+                            <input name="document" type="checkbox" class="ace ace-checkbox-2"
+                                   value="Cheque Book"/>
+                            <span class="lbl"> Account moved within oroscapital</span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input name="document" type="checkbox" class="ace ace-checkbox-2" value="Card"/>
+                            <span class="lbl"> Inactive account/not being used</span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input name="document" class="ace ace-checkbox-2" type="checkbox"
+                                   value="Other Bank Document"/>
+                            <span class="lbl"> Dissatisfied with the service/product features</span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="checkbox">
+                        <label>
+                            <input name="document" type="checkbox" class="ace ace-checkbox-2"
+                                   value="Cheque Book"/>
+                            <span class="lbl"> Interest rate not competitive</span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input name="document" type="checkbox" class="ace ace-checkbox-2" value="Card"/>
+                            <span class="lbl"> Accountholder deceased</span>
+                        </label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input name="document" class="ace ace-checkbox-2" type="checkbox"
+                                   value="Other Bank Document"/>
+                            <span class="lbl"> Resigned from corporate (salary account)</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="checkbox">
+                    <label class="col-md-offset-1">
+                        <input name="document" class="ace ace-checkbox-2" type="checkbox"
+                               value="Other Bank Document"/>
+                        <span class="lbl"> Unable to maintain the minimum balance/charges too high</span>
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input name="document" class="ace ace-checkbox-2" type="checkbox"
+                               value="Other Bank Document"/>
+                        <span class="lbl"> Moved to non-OrosCapital bank location/inconvenient bank location</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-8 col-md-4">
+            <button class="btn btn-primary btn-sm" type="submit" name="saveDraftPaymentInfo"
+                    id="saveDraftPaymentInfo">Submit</button>
+        </div>
+    </div>
+
+</g:form>
+
+</body>
+</html>

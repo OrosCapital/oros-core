@@ -1,0 +1,37 @@
+package com.gsl.uma.security
+
+import com.gsl.oros.core.banking.settings.BankSetup
+import com.gsl.oros.core.banking.settings.BranchSetup
+import grails.converters.JSON
+
+class HierarchyController {
+
+    def index() {
+        def userList = User.list();
+        render(template: '/hierarchy/hierarchy', model: [userList:userList]);
+    }
+
+    def assignRank(){
+        if (request.method == "POST"){
+            String[] userId
+            userId = params.hierarchy.split("_")
+            BankSetup bankSetup = null
+            BranchSetup branchSetup = null
+            Hierarchy assignHierarchy = new Hierarchy()
+            User user
+            Integer r = 0
+            for (int i = 0; i < userId.length; i++) {
+                Integer userIdIntoInteger = Integer.parseInt(userId[i])
+                user = User.read(userIdIntoInteger)
+                assignHierarchy.user = user
+                assignHierarchy.rank = ++r
+                assignHierarchy.bankSetup = bankSetup
+                assignHierarchy.branchSetup = branchSetup
+                assignHierarchy.save(flush: true)
+            }
+
+            def result = [message: "Thank You. Assigning Ranking is done"]
+            render result as JSON
+        }
+    }
+}

@@ -1,0 +1,73 @@
+<g:if test="${evidenceAttach}">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <table class="table table-bordered table-striped table-hover table-condensed" id="attachmentListTable">
+                <thead>
+                <tr>
+                    <th><g:message code="agent.attachmentList.caption" default="Caption"/></th>
+                    <th><g:message code="agent.attachmentList.fileName" default="File Name"/></th>
+                    <th><g:message code="agent.attachmentList.type" default="Type"/></th>
+                    <th><g:message code="agent.attachmentList.size" default="Size"/></th>
+                    <th>Document</th>
+                    <th><g:message code="default.action.label" default="Action"/></th>
+                </tr>
+                </thead>
+                <tbody>
+                <g:each in="${evidenceAttach.attachments}" var="attachment" status="i">
+                    <tr>
+                        <td id="attCaption">${attachment.caption}</td>
+                        <td id="attName">${attachment.originalName}</td>
+
+                        <td id="attDescription">${attachment.type}</td>
+
+                        <td id="attType">${attachment.size}</td>
+                        <td id="attSize"><ii:imageTag indirect-category="${attachment.fileDir}"
+                                                      indirect-imagename="${attachment.link}" width="100px"
+                                                      height="50px"/></td>
+
+
+                        <td class="actions ">
+                            <a class="btn btn-sm delete btn-danger attachment-delete-link"
+                               href="#" attachmentId="${attachment?.id}" dormantAccId="${evidenceAttach?.id}"
+                               title="Delete"><i class="glyphicon glyphicon-trash"></i></a>
+                        </td>
+                    </tr>
+                </g:each>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</g:if>
+
+
+<script type="text/javascript">
+
+    $('#attachmentListTable').on('click', 'a.attachment-delete-link', function (e) {
+        var confirmDel = confirm("Do You Want To Delete?");
+        if (confirmDel == true) {
+            var control = this;
+
+            var attachmentId = $(control).attr('attachmentId');
+            var dormantAccId = $(control).attr('dormantAccId');
+
+            jQuery.ajax({
+                type: 'POST',
+                url: "${g.createLink(controller: 'dormantAccount',action:'delete')}?attachmentId=" + attachmentId + "&dormantAccId=" + dormantAccId,
+                success: function (data, textStatus) {
+                    $('#attachmentListTable').html(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                }
+            });
+        }
+        else {
+
+        }
+        e.preventDefault();
+    });
+
+
+</script>

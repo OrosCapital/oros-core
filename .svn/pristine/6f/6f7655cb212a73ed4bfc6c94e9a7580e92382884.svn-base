@@ -1,0 +1,126 @@
+package com.gsl.oros.core.banking.operation
+
+import com.gsl.oros.core.banking.operation.dormantAccount.DorAccReactivate
+import com.gsl.plugin.attachments.OrosAttachment
+import grails.converters.JSON
+
+class DormantAccountController {
+    def dormantAccountService
+    def mailService
+    def imageIndirectService
+
+    def index() {
+        LinkedHashMap resultMap = dormantAccountService.dormantAccList(params)
+        if (!resultMap || resultMap.totalCount == 0) {
+            render(view: '/coreBanking/settings/operation/dormantAccount/dormantAccount', model: [dataReturns: null, totalCount: 0])
+            return
+        }
+        int totalCount = resultMap.totalCount
+        render(view: '/coreBanking/settings/operation/dormantAccount/dormantAccount', model: [dataReturns: resultMap.results, totalCount: totalCount])
+    }
+
+    def reactivate(){
+        render (view: "/coreBanking/settings/operation/dormantAccount/reActivateAcc")
+    }
+
+    def attachment(){
+        def file = request.getFile('bankDocument')
+        def a=DorAccReactivate.findByClient(Client.findByAccountNo(params.accountNo))
+        if (!request.method == 'POST') {
+          render(view: '/coreBanking/settings/operation/dormantAccount/reActivateAcc')
+            return
+        }
+        DorAccReactivate dorAccReactivate=new DorAccReactivate()
+        Client clientInfo = Client.findByAccountNo(params.accountNo)
+        dorAccReactivate.client=clientInfo
+        Long attachmentId = evidenceAttach(clientInfo, file,params.caption,params.description)
+        if(attachmentId==0){
+            flash.message="Sorry Attachment Upload in Terminated"
+            render(view: '/coreBanking/settings/operation/dormantAccount/reActivateAcc')
+            return
+        }
+        dorAccReactivate.orosAttachment=OrosAttachment.findById(attachmentId)
+        def savedEvidenceAttach=dorAccReactivate.save(flush: true)
+        if(!savedEvidenceAttach){
+            flash.message="Sorry Attachment Upload in Terminated"
+            render(view: '/coreBanking/settings/operation/dormantAccount/reActivateAcc')
+            return
+        }
+        render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttach',model: [evidenceAttach:savedEvidenceAttach])
+    }
+
+    private Long evidenceAttach(Client clientInfo, file,caption,description) {
+        String name = clientInfo.name + " document for reactivate dormant account"
+        String originalName = file.originalFilename
+        String type = file.contentType
+        Long size = file.size
+
+        if (!(type in ['image/jpeg', 'image/gif', 'image/bmp', 'image/png', 'image/jpg'])) {
+            return 0
+        }
+        if (size >= 900000) {
+            return 0
+        }
+        OrosAttachment orosAttachment = new OrosAttachment(
+                name: name,
+                originalName: originalName,
+                caption: caption,
+                description: description,
+                type: type,
+                fileDir: "dormantAccountReactivate/" + clientInfo.accountNo.toString(),
+                size: size
+        )
+        if (!orosAttachment.validate()) {
+            return 0
+        }
+        OrosAttachment saveAttachment = orosAttachment.save(flush: true)
+        if (!saveAttachment) {
+            return 0
+        }
+        File uploadInDirectory = imageIndirectService.storeFile(file, orosAttachment.link, orosAttachment.fileDir)
+        return saveAttachment.id
+
+    }
+
+    def list() {
+        LinkedHashMap gridData
+        String result
+        LinkedHashMap resultMap = dormantAccountService.dormantAccList(params)
+        if (!resultMap || resultMap.totalCount == 0) {
+            gridData = [iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: null]
+            result = gridData as JSON
+            render result
+            return
+        }
+        int totalCount = resultMap.totalCount
+        gridData = [iTotalRecords: totalCount, iTotalDisplayRecords: totalCount, aaData: resultMap.results]
+        result = gridData as JSON
+        render result
+    }
+
+    def email() {
+        if (!request.method == 'post') {
+            def result = [isError: true, message: "Request Method Is Not Post"]
+            String outPut = result as JSON
+            render outPut
+        }
+        def clientInfo = Client.get(params.getLong('id'))
+        if (!clientInfo) {
+            def result = [isError: true, message: "Email Send Is Terminated"]
+            String outPut = result as JSON
+            render outPut
+        }
+        try {
+            mailService.sendMail {
+                async true
+                to "${clientInfo.signatureUrl}"
+                subject "Inform for your dormant account reactivation"
+                html g.render(template: "/mailTemplate/dorAccMailBody", model: [clientInfo: clientInfo])
+            }
+        } catch (Exception e) {}
+
+        def result = [isError: false, message: "Successfully Send Email"]
+        String outPut = result as JSON
+        render outPut
+    }
+}

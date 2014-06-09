@@ -1,0 +1,68 @@
+package com.gsl.oros.core.banking.operation
+
+import grails.converters.JSON
+
+class DormantAccountController {
+    def dormantAccountService
+    def mailService
+
+    def index() {
+        LinkedHashMap resultMap = dormantAccountService.dormantAccList(params)
+        if (!resultMap || resultMap.totalCount == 0) {
+            render(view: '/coreBanking/settings/operation/dormantAccount/dormantAccount', model: [dataReturns: null, totalCount: 0])
+            return
+        }
+        int totalCount = resultMap.totalCount
+        render(view: '/coreBanking/settings/operation/dormantAccount/dormantAccount', model: [dataReturns: resultMap.results, totalCount: totalCount])
+    }
+
+    def reactivate(){
+        render (view: "/coreBanking/settings/operation/dormantAccount/reActivateAcc")
+    }
+
+    def attachment(){
+
+    }
+
+    def list() {
+        LinkedHashMap gridData
+        String result
+        LinkedHashMap resultMap = dormantAccountService.dormantAccList(params)
+        if (!resultMap || resultMap.totalCount == 0) {
+            gridData = [iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: null]
+            result = gridData as JSON
+            render result
+            return
+        }
+        int totalCount = resultMap.totalCount
+        gridData = [iTotalRecords: totalCount, iTotalDisplayRecords: totalCount, aaData: resultMap.results]
+        result = gridData as JSON
+        render result
+    }
+
+    def email() {
+        if (!request.method == 'post') {
+            def result = [isError: true, message: "Request Method Is Not Post"]
+            String outPut = result as JSON
+            render outPut
+        }
+        def clientInfo = Client.get(params.getLong('id'))
+        if (!clientInfo) {
+            def result = [isError: true, message: "Email Send Is Terminated"]
+            String outPut = result as JSON
+            render outPut
+        }
+        try {
+            mailService.sendMail {
+                async true
+                to "${clientInfo.signatureUrl}"
+                subject "Inform for your dormant account reactivation"
+                html g.render(template: "/mailTemplate/dorAccMailBody", model: [clientInfo: clientInfo])
+            }
+        } catch (Exception e) {}
+
+        def result = [isError: false, message: "Successfully Send Email"]
+        String outPut = result as JSON
+        render outPut
+    }
+}

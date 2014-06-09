@@ -1,0 +1,33 @@
+package com.gsl.oros.core.banking.operation
+
+import grails.converters.JSON
+
+class DormantAccountController {
+    def dormantAccountService
+
+    def index() {
+        LinkedHashMap resultMap =dormantAccountService.dormantAccList(params)
+        if(!resultMap || resultMap.totalCount== 0){
+            render(view: '/coreBanking/settings/operation/dormantAccount/dormantAccount', model: [dataReturns: null, totalCount: 0])
+            return
+        }
+        int totalCount =resultMap.totalCount
+        render(view: '/coreBanking/settings/operation/dormantAccount/dormantAccount', model: [dataReturns: resultMap.results, totalCount: totalCount])
+    }
+
+    def list() {
+        LinkedHashMap gridData
+        String result
+        LinkedHashMap resultMap =dormantAccountService.dormantAccList(params)
+        if(!resultMap || resultMap.totalCount== 0){
+            gridData = [iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: null]
+            result = gridData as JSON
+            render result
+            return
+        }
+        int totalCount =resultMap.totalCount
+        gridData = [iTotalRecords: totalCount, iTotalDisplayRecords: totalCount, aaData: resultMap.results]
+        result = gridData as JSON
+        render result
+    }
+}

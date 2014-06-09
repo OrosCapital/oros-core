@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cashReceiptForDeposit" language="groovy" pageWidth="595" pageHeight="575" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="a8959486-3aee-41b1-8417-a32141232b35">
+	<property name="ireport.zoom" value="1.4641000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="281"/>
+	<parameter name="depositAmount" class="java.lang.Double"/>
+	<parameter name="clientAccountId" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[Select 1]]>
+	</queryString>
+	<field name="1" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement x="178" y="35" width="201" height="20" uuid="c91ac1e5-1938-48aa-8550-df2deca93833"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[2 Araromi Street, Onikan, Lagos-Nigeria]]></text>
+			</staticText>
+			<image>
+				<reportElement x="198" y="0" width="150" height="35" uuid="5f760dde-47c3-4421-9991-391143c47d37"/>
+				<imageExpression><![CDATA["C:\\Users\\dell\\Desktop\\oros_logo.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="464" splitType="Stretch">
+			<staticText>
+				<reportElement x="491" y="0" width="62" height="20" uuid="f88f0f8f-c67e-49a7-950f-dde89129405c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Client Copy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="60" width="79" height="20" uuid="26c1018d-a588-49fd-aa7b-f6ffd818b4c8"/>
+				<text><![CDATA[Cash Receipt ID:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="60" width="30" height="20" uuid="00056eae-ead9-45ea-a15d-aa078da8739a"/>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="465" y="60" width="89" height="20" uuid="50ca1400-b471-422a-947d-b666bf46e810"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="95" width="100" height="20" uuid="d8816c9e-8031-47cc-800b-4f2442aa7bf8"/>
+				<text><![CDATA[Cash Received From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="95" width="24" height="20" uuid="14e9aaec-579d-4779-9310-475f29d524b5"/>
+				<text><![CDATA[of  $]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="125" width="30" height="20" uuid="f6fe5085-d3da-431c-abd6-cf987956aec3"/>
+				<text><![CDATA[For]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="198" width="58" height="20" uuid="e4a4d202-0178-4d4a-bfb7-a0a5ab9646a6"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Client Sign]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="198" width="86" height="20" uuid="34e65a92-27c8-4907-817d-22b5c77b1bc2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Bank Seal & Sign]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="112" y="95" width="90" height="20" uuid="9ce1d79c-3e49-40c5-85c9-bd6b1c11ed87"/>
+				<textFieldExpression><![CDATA[$P{clientAccountId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="95" width="114" height="20" uuid="9b37c4ea-dd15-49f1-9300-981f6fb04c7a"/>
+				<textFieldExpression><![CDATA[$P{depositAmount}+ "Only"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="32" width="79" height="20" uuid="50c37ad3-f6d4-4aa4-8d16-6ae44e541214"/>
+				<text><![CDATA[Deposit Type:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="32" width="33" height="20" uuid="9c8e7049-bb0d-4c65-a281-f43d7cd23da8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CASH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="5" width="146" height="20" uuid="80517517-93fa-4c05-acb3-3d24f8240745"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Deposit (CASH) Receipt]]></text>
+			</staticText>
+			<image>
+				<reportElement x="198" y="238" width="150" height="35" uuid="b6571a67-7f53-4584-89df-c921af33de0f"/>
+				<imageExpression><![CDATA["C:\\Users\\dell\\Desktop\\oros_logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="198" y="304" width="146" height="20" uuid="86e83205-ea37-4126-b536-052d87645b40"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Deposit (CASH) Receipt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="277" width="201" height="20" uuid="430e1dd4-8aeb-4e9e-927a-1ebf34daa687"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[2 Araromi Street, Onikan, Lagos-Nigeria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="308" width="62" height="20" uuid="3b701e04-875b-41fa-b786-fd336ec3c61a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bank Copy]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="228" width="551" height="1" uuid="e31b73ff-0527-4f37-b4e7-3671215bc867"/>
+			</line>
+			<staticText>
+				<reportElement x="70" y="328" width="33" height="20" uuid="245c2b6f-ac46-4fe2-8406-1605dd3e7067"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CASH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="328" width="68" height="20" uuid="6126c9f9-1515-4c01-a0b1-747ad32cec3e"/>
+				<text><![CDATA[Deposit Type:]]></text>
+			</staticText>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="465" y="329" width="89" height="20" uuid="e4b6f775-2132-426b-9164-c2215305b815"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="433" y="329" width="30" height="20" uuid="9b508bc0-3790-4989-8bff-18bf39232a10"/>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="359" width="79" height="20" uuid="addc6b3c-0ce3-4db0-8933-d31d4356e627"/>
+				<text><![CDATA[Cash Receipt ID:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="380" width="90" height="20" uuid="0b46ad50-3996-4245-b0d5-f40062aa5997"/>
+				<textFieldExpression><![CDATA[$P{clientAccountId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="244" y="380" width="114" height="20" uuid="777fb148-3296-476e-a4d3-842d3e5e8580"/>
+				<textFieldExpression><![CDATA[$P{depositAmount}+ "Only"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="220" y="380" width="24" height="20" uuid="f7c38ee3-970c-40e6-a8fb-d31cb2b825c3"/>
+				<text><![CDATA[of  $]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="380" width="100" height="20" uuid="0e433829-faad-40a1-a963-13852b05102f"/>
+				<text><![CDATA[Cash Received From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="469" y="444" width="86" height="20" uuid="2da1d813-8507-4fea-8f61-c34f09eaff69"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Bank Seal & Sign]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="444" width="58" height="20" uuid="4720450d-b1e8-478d-b773-673ab13f90f6"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Client Sign]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="379" width="30" height="20" uuid="d6c79086-99b1-423f-beb7-3a891378dfc2"/>
+				<text><![CDATA[For]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="194" width="67" height="1" uuid="9d53252f-939d-44f8-9173-a82d764ba9e2"/>
+			</line>
+			<line>
+				<reportElement x="464" y="195" width="90" height="1" uuid="cbc9c63d-1085-4b68-a26f-129ac99e0af2"/>
+			</line>
+		</band>
+	</columnHeader>
+</jasperReport>

@@ -1,0 +1,116 @@
+package com.gsl.oros.core.banking.loan
+
+import com.gsl.cbs.contraints.enums.StatusType
+import com.gsl.oros.core.banking.settings.BankSetup
+import grails.converters.JSON
+
+class LoanController {
+    def loanService
+    def index() {
+        def request=Loan.findAllByStatus("REQUESTED")
+        println(request.size())
+        render(view: '/loan/createLoan')
+    }
+
+    def create(){
+        render(view: '/loan/loanApplication',model: [
+                dateFormat: BankSetup.properties.bankDateFormat ? BankSetup.properties.bankDateFormat : "dd/mm/yyyy",
+                dateMask: "99/99/9999",
+                currentDt: new Date().format("dd/MM/yyyy"),
+                decimalSep: BankSetup.properties.decimalSeparator ? BankSetup.properties.decimalSeparator : 2])
+    }
+
+    def showLoanInfo(){
+           if(params.id=="1")
+            render(template: 'loanType1')
+           if(params.id=="2")
+            render(template: 'loanType2')
+            if(params.id=="3")
+            render(template: 'loanType3')
+
+    }
+
+    def save(LoanCommand loanCommand){
+
+        if (request.method == "POST"){
+
+            if (loanCommand.hasErrors()){
+                render(view: '/loan/loanApplication', model: [loan: loanCommand])
+                return
+            }
+
+            Loan loan= new Loan(loanCommand.properties)
+
+
+            if(!loan.validate()){
+                render(view: '/loan/loanApplication', model: [loan:loan])
+                return
+            }
+
+            Loan saveLoan = loan.save(flush: true)
+            if(!saveLoan){
+                render(view: '/loan/loanApplication', model: [loan:saveLoan])
+                return
+            }
+            flash.message = "Loan Info Successfully Saved"
+            render(view: '/loan/createLoan', model: [decimalSep: BankSetup.properties.decimalSeparator ? BankSetup.properties.decimalSeparator : 2,loan: saveLoan])
+        }else {
+            render(view: '/loan/createLoan')
+
+
+    }
+
+}
+    def checkAccountNo() {
+        def result
+        if(params.accountNo == "12345"){
+            result = "12345"
+        }else {
+            result = null
+
+        }
+        def r = [result: result]
+        render r as JSON
+    }
+    def loanRequest(){
+        LinkedHashMap resultMap =loanService.loanPaginateList(params)
+        if(!resultMap || resultMap.totalCount== 0){
+            render(view: 'loanRequestedList', model: [dataReturns: null, totalCount: 0])
+            return
+        }
+        int totalCount =resultMap.totalCount
+        render(view: 'loanRequestedList', model: [dataReturns: resultMap.results, totalCount: totalCount])
+}
+    def loanList(){
+        LinkedHashMap gridData
+        String result
+        LinkedHashMap resultMap =loanService.loanPaginateList(params)
+        if(!resultMap || resultMap.totalCount== 0){
+            gridData = [iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: null]
+            result = gridData as JSON
+            render result
+            return
+        }
+        int totalCount =resultMap.totalCount
+        gridData = [iTotalRecords: totalCount, iTotalDisplayRecords: totalCount, aaData: resultMap.results]
+        result = gridData as JSON
+        render result
+    }
+}
+class LoanCommand{
+
+    Integer amount
+    String amountInWord
+    String accountNo
+    String purpose
+    String income
+    Date durationStart
+    Date durationEnd
+    StatusType status=StatusType.REQUESTED
+    static constraints = {
+        purpose nullable: true
+        amountInWord nullable: true
+    }
+
+
+}

@@ -12,7 +12,9 @@
     }
 </style>
     <ul class="breadcrumb">
-        <li id="notify"></li>
+        <li id="notify"><a href="#"><span class="alert alert-danger">Banking</span> </a></li>
+        <li id="notify1"><a href="#"><span class="alert alert-danger">Insurance</span> </a></li>
+        <li id="notify2"><a href="#"><span class="alert alert-danger">User Mgmt</span> </a></li>
     </ul><!-- .breadcrumb -->
 
     %{--<div class="nav-search" id="nav-search">--}%

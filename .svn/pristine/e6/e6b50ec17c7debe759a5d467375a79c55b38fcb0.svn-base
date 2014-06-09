@@ -1,0 +1,220 @@
+package com.gsl.oros.core.banking.operation
+
+
+import com.gsl.plugin.attachments.AttachStatus
+import com.gsl.plugin.attachments.OrosAttachment
+import grails.converters.JSON
+import org.springframework.web.multipart.MultipartFile
+
+class DormantAccountController {
+    def dormantAccountService
+    def mailService
+    def imageIndirectService
+
+    def index() {
+        LinkedHashMap resultMap = dormantAccountService.dormantAccList(params)
+        if (!resultMap || resultMap.totalCount == 0) {
+            render(view: '/coreBanking/settings/operation/dormantAccount/dormantAccount', model: [dataReturns: null, totalCount: 0])
+            return
+        }
+        int totalCount = resultMap.totalCount
+        render(view: '/coreBanking/settings/operation/dormantAccount/dormantAccount', model: [dataReturns: resultMap.results, totalCount: totalCount])
+    }
+
+    def list() {
+        LinkedHashMap gridData
+        String result
+        LinkedHashMap resultMap = dormantAccountService.dormantAccList(params)
+        if (!resultMap || resultMap.totalCount == 0) {
+            gridData = [iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: null]
+            result = gridData as JSON
+            render result
+            return
+        }
+        int totalCount = resultMap.totalCount
+        gridData = [iTotalRecords: totalCount, iTotalDisplayRecords: totalCount, aaData: resultMap.results]
+        result = gridData as JSON
+        render result
+    }
+
+    def reactivate(){
+        render (view: "/coreBanking/settings/operation/dormantAccount/reActivateAcc",model: [tabSelectIndicator:1,clientId:0])
+    }
+
+    def accountNoVerify(){
+        def verifyClient = Client.findByAccountNo(params.accountNo)
+        if (verifyClient) {
+            def result = [isError: false, accountInfo: verifyClient,clientId:verifyClient.id]
+            String outPut = result as JSON
+            render outPut
+            return
+        }
+        def result = [isError: true, message: "Account Holder Not Found"]
+        render result as JSON
+    }
+
+    def attachment(){
+        Long clientId=params.getLong('clientId')
+        def clientInfo=Client.get(clientId)
+        def file = request.getFile('attachment')
+
+        if (!request.method == 'POST') {
+            flash.message="Sorry request is not post"
+            render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachment')
+            return
+        }
+        if(!clientInfo){
+            flash.message="Sorry,Client is not found"
+            render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList')
+            return
+        }
+        if(!file){
+            flash.message="Sorry Attachment upload is Terminated"
+            render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList')
+            return
+        }
+
+        String name = clientInfo.name + " document for reactivate dormant account"
+        String originalName = file.originalFilename
+        String type = file.contentType
+        Long size = file.size
+        String caption= params.caption
+
+        Boolean evidenceAttachCon=evidenceAttach(file)
+        if(evidenceAttachCon==false){
+            flash.message="Sorry Attachment Upload is Terminated"
+            render(view: '/coreBanking/settings/operation/dormantAccount/reActivateAcc')
+            return
+        }
+
+        OrosAttachment orosAttachment = new OrosAttachment(
+                name: name,
+                originalName: originalName,
+                caption: caption,
+                type: type,
+                fileDir: "dormantAccountReactivate/" + clientInfo.accountNo.toString(),
+                size: size
+        )
+        if (!orosAttachment.validate()) {
+            flash.message="Sorry Attachment Upload in Terminated"
+            render(view: '/coreBanking/settings/operation/dormantAccount/reActivateAcc')
+            return
+        }
+
+        OrosAttachment saveAttachment = orosAttachment.save(flush: true)
+        if (!saveAttachment) {
+            flash.message="Sorry Attachment Upload in Terminated"
+            render(view: '/coreBanking/settings/operation/dormantAccount/reActivateAcc')
+            return
+        }
+        clientInfo.addToAttachments(saveAttachment)
+
+        File uploadInDirectory = imageIndirectService.storeFile(file, orosAttachment.link, orosAttachment.fileDir)
+        render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList',model: [evidenceAttach:clientInfo,clientId:clientId])
+    }
+
+    private Boolean evidenceAttach(file) {
+        String type = file.contentType
+        Long size = file.size
+
+        if (!(type in ['image/jpeg', 'image/gif', 'image/bmp', 'image/png', 'image/jpg'])) {
+            return false
+        }
+        if (size >= 900000) {
+            return false
+        }
+
+    }
+
+
+
+    def email() {
+        if (!request.method == 'post') {
+            def result = [isError: true, message: "Request Method Is Not Post"]
+            String outPut = result as JSON
+            render outPut
+        }
+        def clientInfo = Client.get(params.getLong('id'))
+        if (!clientInfo) {
+            def result = [isError: true, message: "Email Send Is Terminated"]
+            String outPut = result as JSON
+            render outPut
+        }
+
+        try {
+            mailService.sendMail {
+                async true
+                to "${clientInfo.signatureUrl}"
+                subject "Inform for your dormant account reactivation"
+                html g.render(template: "/mailTemplate/dorAccMailBody", model: [clientInfo: clientInfo])
+            }
+        } catch (Exception e) {}
+
+
+        def result = [isError: false, message: "Successfully Send Email"]
+        String outPut = result as JSON
+        render outPut
+    }
+
+    def delete(){
+        Long attachmentId=params.getLong('attachmentId')
+        Long clientId=params.getLong('clientId')
+         Client client=Client.get(clientId)
+        if(!client) {
+            flash.message="Account Holder Is Not Available"
+            render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList',model: [clientId:clientId])
+          return
+        }
+        OrosAttachment orosAttachment=client.attachments.find{it.id==attachmentId}
+        orosAttachment.status=AttachStatus.DELETED
+        Client deletedClientAttach=client.save()
+
+        if(!deletedClientAttach){
+            flash.message="Attachment Is not Deleted"
+            render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList',model: [clientId:clientId])
+            return
+        }
+        deletedClientAttach.attachments?.removeAll {it.status==AttachStatus.DELETED}
+
+        render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList',model: [evidenceAttach:deletedClientAttach,clientId:clientId])
+    }
+
+    def download(){
+        Long attachmentId=params.getLong('attachmentId')
+        OrosAttachment attachment= OrosAttachment.get(attachmentId)
+        if (!attachment){
+            flash.message="Attachment Not Found"
+            return
+        }
+        String filePath = imageIndirectService.fullDirPath(attachment.fileDir)
+        def files = new File(filePath,attachment.link) //Full path of a file
+        if (files.exists()) {
+
+            response.setContentType("application/octet-stream")
+            response.setHeader("Content-disposition", "attachment;filename=${attachment.originalName.replaceAll(' ','_')}")
+            response.outputStream << files.bytes
+        }else {
+            flash.message="Attachment not found."
+
+        }
+
+    }
+
+    def previousAttach(){
+        def clientId=params.getLong('clientId')
+        Client client=Client.get(clientId)
+
+        if (!client){
+            flash.message="Sorry Account Holder is not available"
+            render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList')
+            return
+        }
+        client.attachments?.removeAll {it.status==AttachStatus.DELETED}
+        if(client.attachments.size()<1){
+            flash.message="There is no Previous Attachment"
+            render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList',model: [evidenceAttach:client,clientId:clientId])
+            return
+        }
+        render(view: '/coreBanking/settings/operation/dormantAccount/_evidenceAttachList',model: [evidenceAttach:client,clientId:clientId])
+    }
+}

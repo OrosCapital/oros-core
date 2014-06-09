@@ -1,0 +1,601 @@
+
+default.paginate.prev=Previous
+default.paginate.next=Next
+default.boolean.true=True
+default.boolean.false=False
+default.date.format=yyyy-MM-dd HH:mm:ss z
+default.number.format=0
+
+
+
+default.home.label=Home
+default.add.label=Add {0}
+default.new.label=New {0}
+default.create.label=Create {0}
+default.show.label=Show {0}
+default.edit.label=Edit {0}
+
+default.serial.label=Serial
+default.action.label=Action
+default.country.label=Country
+default.state.label=State
+default.city.label=City
+default.currency.label=Currency
+default.date.label=Date
+
+default.address.general.title=General Address
+default.address.postal.title=Postal Address
+default.address.streetName.label=Street Name
+default.address.zipCode.label=Zip Code
+default.address.postCode.label=Post Code
+default.address.label=Address
+default.address.phone.label=Phone No
+default.address.mobile.label=Mobile No
+default.address.fax.label=Fax No
+default.address.email=Email
+default.address.email2=Second Email
+default.address.websiteUrl=Website URL
+
+
+
+
+
+
+default.button.create.label=Create
+default.button.edit.label=Edit
+default.button.update.label=Update
+default.button.finish.label=Finish
+default.button.delete.label=Delete
+default.button.reset.label=Reset
+default.button.submit.label=Submit
+default.button.next.label=Next
+default.button.delete.confirm.message=Are you sure?
+default.not.unique.message=[{0}] must be unique
+
+
+default.attachment.caption.label=Caption
+default.attachment.fileName.label=File Name
+default.attachment.type.label=Type
+default.attachment.size.label=Size
+default.attachment.description.label=Description
+default.attachment.attachment.label=Attachment
+
+
+ # Default :30-03-2014
+default.doesnt.match.message=Property [{0}] of class [{1}] with value [{2}] does not match the required pattern [{3}]
+default.invalid.url.message=Property [{0}] of class [{1}] with value [{2}] is not a valid URL
+default.invalid.creditCard.message=Property [{0}] of class [{1}] with value [{2}] is not a valid credit card number
+default.invalid.email.message=Please input a valid e-mail address
+default.invalid.range.message=Property [{0}] of class [{1}] with value [{2}] does not fall within the valid range from [{3}] to [{4}]
+default.invalid.size.message=Property [{0}] of class [{1}] with value [{2}] does not fall within the valid size range from [{3}] to [{4}]
+default.invalid.max.message=Property [{0}] of class [{1}] with value [{2}] exceeds maximum value [{3}]
+default.invalid.min.message=Property [{0}] of class [{1}] with value [{2}] is less than minimum value [{3}]
+default.invalid.max.size.message=Property [{0}] of class [{1}] with value [{2}] exceeds the maximum size of [{3}]
+default.invalid.min.size.message=Property [{0}] of class [{1}] with value [{2}] is less than the minimum size of [{3}]
+default.invalid.validator.message=Property [{0}] of class [{1}] with value [{2}] does not pass custom validation
+default.not.inlist.message=Property [{0}] of class [{1}] with value [{2}] is not contained within the list [{3}]
+default.blank.message=Property [{0}] of class [{1}] cannot be blank
+default.not.equal.message=Property [{0}] of class [{1}] with value [{2}] cannot equal [{3}]
+default.null.message={0} cannot be null
+
+# Login errors
+springSecurity.errors.login.expired=Sorry, your account has expired.
+springSecurity.errors.login.passwordExpired=Sorry, your password has expired.
+springSecurity.errors.login.disabled=Sorry, your account is disabled.
+springSecurity.errors.login.locked=Sorry, your account is locked.
+springSecurity.errors.login.fail=Sorry, we were not able to find a user with that username and password.
+
+# Login Page
+springSecurity.login.title=Login
+springSecurity.login.header=Please Login
+springSecurity.login.button=Login
+springSecurity.login.username.label=Username
+springSecurity.login.password.label=Password
+springSecurity.login.remember.me.label=Remember me
+springSecurity.login.header.insert.information=Please Enter Your Information
+springSecurity.login.header.title=OrosCapital
+
+#security and user management related
+com.gsl.uma.security.authority.name.invalid =Role name must start with ROLE_
+com.gsl.uma.security.authority.already.exist =Role already exist.
+
+#Create User page
+uma.security.user.confirm.not.match =Confirm password not match
+# Denied Page
+springSecurity.denied.title=Denied
+springSecurity.denied.message=Sorry, you're not authorized to view this page.
+
+#VendorMaster Validation Related
+com.gsl.clients.vendor.vendorCode.already.exist = Vendor code already exists
+clients.customer.customerCode.already.exist = Customer code already exists
+clients.customer.customerCode.required = Customer code cannot be blank
+##Country Setting Related
+com.gsl.coreBanking.setting.country.already.exist=Country Already Exist
+com.gsl.coreBanking.setting.countryPrintable.already.exist=Country Printable Name Already Exist
+com.gsl.coreBanking.setting.countryNumberCode.already.exist=Country Number Code Already Exist
+
+##Currency Setting Related
+com.gsl.coreBanking.setting.currency.already.exist=Currency Already Exist
+com.gsl.coreBanking.setting.currencySymbol.already.exist=Currency Symbol Already Exist
+com.gsl.coreBanking.setting.currency.country.already.exist=Currency Already Exist For This Country
+
+#Bank Setup
+
+
+
+
+
+
+
+ ## Chart Html5 validation
+ chart.chartClass.name=Please Enter the Chart Class Name
+ chart.chartClass.name.unique=Class Name already exist
+ chart.chartGroup.name=Please Enter the Chart Group Name
+ chart.chartGroup.name.unique= Group Name already exist
+
+ chart.chartMaster.accountCode=Please Enter the Account Code
+ chart.chartMaster.accountName=Please Enter the Account Name
+ chart.chartMaster.accountCode.unique= Account Code already exist
+ chart.chartMaster.accountName.unique= Account Name Already exist
+
+ // Retail Account
+ retail.introducer.accountNo = Account No Already exist!
+
+ ## Bank setup
+coreBanking.setting.bankSetup.generalInfo.title=General Information
+coreBanking.setting.bankSetup.vatTax.title=Vat & Tax
+coreBanking.setting.bankSetup.defaultSet.title=Default Setting
+coreBanking.setting.bankSetup.title=Bank Setting
+coreBanking.setting.bankSetup.dateFormate=B.Date Format
+coreBanking.setting.bankSetup.amntDeciPoint=Amnt.Deci.Point
+coreBanking.setting.bankSetup.dateSeperator=Date Seperator
+coreBanking.setting.bankSetup.deciRoundType=Deci Round Type
+coreBanking.setting.bankSetup.decimalSeprator=Decimal Seprator
+coreBanking.setting.bankSetup.decimalPoint=(%)Decimal Point
+coreBanking.setting.bankSetup.language=Language
+coreBanking.setting.bankSetup.bookingPeriod=Booking Period
+coreBanking.setting.bankSetup.qtyDecimalPoint=Qty.Decimal Point
+coreBanking.setting.bankSetup.reportPageSize=Report Page Size
+coreBanking.setting.bankSetup.glCodeInReport=Gl code In Report
+coreBanking.setting.bankSetup.itemOnReport=Item # On Report
+coreBanking.setting.bankSetup.taxType=Tax Type
+coreBanking.setting.bankSetup.thousandSeparator=Thousand Separator
+coreBanking.setting.bankSetup.reportDateFormat=Thousand Separator
+
+coreBanking.setting.bankSetup.bankFullName=Bank Full Name
+coreBanking.setting.bankSetup.bankShortName=Bank Short Name
+coreBanking.setting.bankSetup.chamberOfCommerce=Chamber of Com
+coreBanking.setting.bankSetup.websiteUrl=Website URL
+coreBanking.setting.bankSetup.logo=Bank Logo
+coreBanking.setting.bankSetup.taxCertificationNo=Tax Certificate No
+coreBanking.setting.bankSetup.vatCertificateNo=Vat Certificate No
+coreBanking.setting.bankSetup.paymentTerm=Payment Term
+coreBanking.setting.bankSetup.defaultVat=Default Vat
+coreBanking.setting.bankSetup.taxReservation=Tax Reservation
+coreBanking.setting.bankSetup.unseenExpReserve=Unseen Exp. Reserve
+coreBanking.setting.bankSetup.invoiceMoment=Invoice S. Moment
+
+##Others Bank Setup
+coreBanking.setting.othBankSetup.bankFullName=Bank FullName
+coreBanking.setting.othBankSetup.bankShortName=Bank ShortName
+coreBanking.setting.othBankSetup.add.button=Add Bank
+coreBanking.setting.othBankSetup.list.label=Bank List
+coreBanking.setting.othBankSetup.contactPerson.label=Contact Person
+coreBanking.setting.othBankSetup.contactName=Name
+coreBanking.setting.othBankSetup.designation=Designation
+##Branch Setup Unique test
+coreBanking.setting.othBankSetup.bankFullName.unique=Bank Full Name Must Be Unique
+coreBanking.setting.othBankSetup.bankShortName.unique=Bank Short Name Must Be Unique
+
+##BranchSetup
+coreBanking.setting.branchSetup.title=Branch Setting
+coreBanking.setting.branchSetup.generalInfo.label=General Information
+coreBanking.setting.branchSetup.branchFullName=Branch FullName
+coreBanking.setting.branchSetup.branchShortName=Branch ShortName
+coreBanking.setting.branchSetup.branchType=Branch Type
+coreBanking.setting.branchSetup.parentOffice=Parent Office
+coreBanking.setting.branchSetup.list.label=Branch List
+coreBanking.setting.branchSetup.add.button=Add Branch
+##Branch Setup Unique test
+coreBanking.setting.branchSetup.branchFullName.unique=Branch full name must be unique
+coreBanking.setting.branchSetup.branchShortName.unique=branch Short Name name must be unique
+
+##Others Branch Setup
+coreBanking.setting.othBranchSetup.title=Others Branch Setup
+coreBanking.setting.othBranchSetup.generalInfo.label=General Information
+coreBanking.setting.othBranchSetup.contactInfo.label=Contact Information
+coreBanking.setting.othBranchSetup.bankName=Bank Name
+coreBanking.setting.othBranchSetup.add.button=Add Branch
+coreBanking.setting.othBranchSetup.list.label=Branch List
+##Branch Setup Unique test
+coreBanking.setting.othBranchSetup.branchFullName.unique=Branch Full Name Must Be Unique
+coreBanking.setting.othBranchSetup.branchShortName.unique=Branch Short Name Must Be Unique
+
+
+#Retailer Setup
+coreBanking.setting.retailerSetup.title=Retailer Setup
+coreBanking.setting.retailerSetup.basicInfo.title=Basic Information
+coreBanking.setting.retailerSetup.advanceSetup.title=Advanced Setup
+coreBanking.setting.retailerSetup.retailerName=Retailer Name
+coreBanking.setting.retailerSetup.retailerCode=Retailer Code
+coreBanking.setting.retailerSetup.account=Account
+coreBanking.setting.retailerSetup.branch =Branch
+coreBanking.setting.retailerSetup.minAmountPerDay=Minimum Amount Per Day
+coreBanking.setting.retailerSetup.maxAmountPerDay=Maximum Amount Per Day
+coreBanking.setting.retailerSetup.minDeposit=Minimum Amount Per Deposits
+coreBanking.setting.retailerSetup.maxDeposit=Maximum Amount Per Deposits
+coreBanking.setting.retailerSetup.minWithdrawal=Minimum Amt Per Withdrawal
+coreBanking.setting.retailerSetup.maxWithdrawal=Maximum Amt Per Withdrawal
+coreBanking.setting.retailerSetup.add.button=Add Retailer
+coreBanking.setting.retailerSetup.list.label=Retailer List
+##Retailer Setup Unique test
+coreBanking.setting.retailerSetup.retailerName.unique=Retailer Name Must Be Unique
+coreBanking.setting.retailerSetup.retailerCode.unique=Retailer Code Must Be Unique
+
+ ##Country
+ coreBanking.settings.country.title=Create Country
+ coreBanking.settings.country.name.label=Country Name
+ coreBanking.settings.country.printableName.label=Printable Name
+ coreBanking.settings.country.numCode.label=Num Code
+ coreBanking.settings.country.iso2.label=ISO2 Name
+ coreBanking.settings.country.iso3.label=ISO3 Name
+ coreBanking.settings.country.list.title=Country List
+ coreBanking.settings.country.add.button=Add Country
+ ##Country Unique test
+coreBanking.setting.country.name.unique=Country name must be unique
+coreBanking.setting.country.printableName.unique=Country printable must be unique
+coreBanking.setting.country.numberCode.unique=Country number code must be unique
+
+ ##Currency
+ coreBanking.settings.currency.title=Create Currency
+ coreBanking.settings.currency.name.label=Currency Name
+ coreBanking.settings.currency.abbreviation.label=Currency Abbreviation
+ coreBanking.settings.currency.Symbol.label=Currency Symbol
+ coreBanking.settings.currency.hundredName.label=Hundred Name
+ coreBanking.settings.currency.list.title=Currency List
+ coreBanking.settings.currency.add.button=Add Currency
+##Currency Unique test
+   coreBanking.setting.currency.name.unique=Currency name must be unique
+   coreBanking.setting.currency.symbol.unique=Currency symbol must be unique
+   coreBanking.setting.currency.country.unique=Currency country must be unique
+
+
+ #Exchange Rate
+ coreBanking.settings.exchangerate.title=Exchange Rate
+ coreBanking.settings.exchangerate.buyPrice.label=Buy Price
+ coreBanking.settings.exchangerate.sellPrice.label=Sell Price
+ coreBanking.settings.exchangerate.list.title=Exchange Rate List
+
+ coreBanking.settings.exchangerate.add.button=Add ExchangeRate
+
+  ##Vat Category
+ coreBanking.setting.vatCategory.title=Vat Category
+coreBanking.setting.vatCategory.name.label=Category Name
+coreBanking.setting.vatCategory.rate.label=Category Rate
+coreBanking.setting.vatCategory.vatGlAccount.label=Vat GL Account
+coreBanking.setting.vatCategory.purchaseGlAcc.label=Purchase GL Account
+coreBanking.setting.vatCategory.salesGlAcc.label=Sales GL Account
+coreBanking.setting.vatCategory.list.title=Vat Category List
+coreBanking.setting.vatCategory.add.button=Add VatCategory
+
+ #fiscal Year
+ coreBanking.accounting.fiscalYear.title=Fiscal Year
+ coreBanking.accounting.fiscalYear.beginDate.label=Begin Date
+ coreBanking.accounting.fiscalYear.endDate.label=Ending Date
+ coreBanking.accounting.fiscalYear.closed.label=Closed
+ coreBanking.accounting.fiscalYear.list.title=FiscalYear List
+
+#Saving Product
+coreBanking.saving.product.header =Savings Product
+coreBanking.saving.product.index.h3 = Savings Product List
+coreBanking.saving.product.index.button = Add Product
+coreBanking.saving.product.index.table.th.serial = Serial
+coreBanking.saving.product.index.table.th.productNm = Product Name
+coreBanking.saving.product.index.table.th.productCd = Product Code
+coreBanking.saving.product.tab.mainParameters = Main Parameters
+coreBanking.saving.product.tab.transactions = Transactions
+coreBanking.saving.product.tab.fees = Fees
+coreBanking.saving.product.tab.overdraft= Overdraft
+coreBanking.saving.product.tab.termSetup = Term Setup
+
+coreBanking.saving.product.startAmount =  Start Amount
+coreBanking.saving.product.endAmount = End Amount
+coreBanking.saving.product.min = Min
+coreBanking.saving.product.max = Max
+coreBanking.saving.product.rate = Rate
+coreBanking.saving.product.rateType = Rate Type
+coreBanking.saving.product.circleType = Circle Type
+coreBanking.saving.product.circleName = Circle Name
+coreBanking.saving.product.calAmBasedOn = Cal. Amount Based On
+coreBanking.saving.product.value = Value
+coreBanking.saving.product.action = Action
+coreBanking.saving.product.button.add = Add
+
+coreBanking.saving.product.mainParameters.label.name = Name
+coreBanking.saving.product.mainParameters.label.code = Code
+coreBanking.saving.product.mainParameters.legend.attachProductToClient = Attach product to a specific client type
+coreBanking.saving.product.mainParameters.legend.attachProductToCurrency = Attach product to currency
+coreBanking.saving.product.mainParameters.checkbox.all = ALL
+coreBanking.saving.product.mainParameters.legend.initialAmount = Initial Amount
+coreBanking.saving.product.mainParameters.legend.balance = Balance
+coreBanking.saving.product.mainParameters.legend.interestRate = Interest Rate
+
+
+
+coreBanking.saving.product.transactions.legend = Deposit Parameters
+coreBanking.saving.product.transactions.p = Transaction in :
+coreBanking.saving.product.transactions.cash = Cash
+coreBanking.saving.product.transactions.cheque = Cheque
+coreBanking.saving.product.transactions.card = Card
+coreBanking.saving.product.transactions.cash.cashDeposit = Cash Deposit
+coreBanking.saving.product.transactions.withdrawing = Withdrawing
+coreBanking.saving.product.transactions.transfer = Transfer
+coreBanking.saving.product.transactions.cheque.chequeDeposit = Cheque Deposit
+coreBanking.saving.product.transactions.card.cardDeposit = Card Deposit
+coreBanking.saving.product.transactions.table.cashFees.legend = Cash Fees
+coreBanking.saving.product.transactions.table.chequeFees.legend = Cheque Fees
+coreBanking.saving.product.transactions.table.cardFees.legend =  Card Fees
+coreBanking.saving.product.transactions.table.withdrawalFees.legend = Withdrawal Fees
+coreBanking.saving.product.transactions.table.transferFees.legend = Transfer Fees
+
+coreBanking.saving.product.fees.entry.legend = Entry fees
+coreBanking.saving.product.fees.reopen.legend = Reopen fees
+coreBanking.saving.product.fees.close.legend = Close fees
+coreBanking.saving.product.fees.management.legend = Management fees
+
+coreBanking.saving.product.overdraft.fixed.legend = Fixed overdraft fees
+coreBanking.saving.product.overdraft.agio.legend = Agio fees
+
+coreBanking.saving.product.termSetup.deposit.checkbox = Deposit
+coreBanking.saving.product.termSetup.withdrawal.checkbox = Withdrawal
+coreBanking.saving.product.termSetup.transfer.checkbox = Transfer
+coreBanking.saving.product.termSetup.numberOfPeriods.legend = Number of Periods
+coreBanking.saving.product.termSetup.postingFrequency.legend = Posting frequency
+
+coreBanking.saving.product.termSetup.deposit.minimum.empty = Minimum period for Deposit cannot be empty.
+coreBanking.saving.product.termSetup.deposit.maximum.empty = Maximum period for Deposit cannot be empty.
+coreBanking.saving.product.termSetup.withdrawal.minimum.empty = Minimum period for Withdrawal cannot be empty.
+coreBanking.saving.product.termSetup.withdrawal.maximum.empty = Maximum period for Withdrawal cannot be empty.
+coreBanking.saving.product.termSetup.transfer.minimum.empty = Minimum period for Transfer cannot be empty.
+coreBanking.saving.product.termSetup.transfer.maximum.empty = Maximum period for Transfer cannot be empty.
+
+
+coreBanking.accounting.fiscalYear.add.button=Add FiscalYear
+
+# deposit
+coreBanking.operation.deposit.cash.header.lbl= Deposit (CASH)
+coreBanking.operation.deposit.cheque.header.lbl= Deposit (CHEQUE)
+coreBanking.operation.deposit.recipient.ac.lbl= Recipient A/C No
+coreBanking.operation.deposit.recipient.ac.holder.name.lbl= A/C Holder Name
+coreBanking.operation.deposit.recipient.branch.name.lbl= Branch Name
+coreBanking.operation.deposit.date.lbl= Date of Deposit
+coreBanking.operation.deposit.amount.lbl= Deposit Amount
+coreBanking.operation.deposit.conversion.amount.lbl= Conversion Amount
+coreBanking.operation.deposit.amount.in.word.lbl = Amount in Word
+coreBanking.operation.deposit.recipient.currency.lbl= Recipient Currency
+coreBanking.operation.deposit.type.lbl = Deposit Type
+coreBanking.operation.deposit.type.cash.lbl= Cash
+coreBanking.operation.deposit.type.cheque.lbl= Cheque
+coreBanking.operation.deposit.type.transfer.lbl= Transfer
+coreBanking.operation.deposit.type.card.lbl= Card
+coreBanking.operation.deposit.depositor.ac.no.lbl= Depositor A/C No
+coreBanking.operation.deposit.depositor.name.lbl= Depositor Name
+coreBanking.operation.deposit.depositor.bank.name.lbl= Bank Name
+coreBanking.operation.deposit.depositor.br.name.lbl= Branch Name
+coreBanking.operation.deposit.depositor.phone.lbl= Phone No
+coreBanking.operation.deposit.depositor.address.lbl= Address
+coreBanking.operation.deposit.depositor.cheque.no.lbl= Cheque No
+coreBanking.operation.deposit.depositor.currency.lbl= Depositor Currency
+coreBanking.operation.deposit.comment.lbl= Comments
+coreBanking.operation.deposit.depositor.pin.code.lbl= PIN Code
+coreBanking.operation.deposit.depositor.card.name.lbl= Name of Card
+coreBanking.operation.deposit.depositor.card.holder.name.lbl= Card Holder Name
+coreBanking.operation.deposit.depositor.card.no.lbl= Card No
+coreBanking.operation.deposit.depositor.card.expire.dt.lbl= Expired Date
+coreBanking.operation.deposit.depositor.card.security.code.lbl= Security Code
+#Bank Draft
+coreBanking.operation.bankDraft.ownerInfo.acholderName = A/C Holder Name
+coreBanking.operation.bankDraft.ownerInfo.bankName = Bank Name
+coreBanking.operation.bankDraft.ownerInfo.branchName = Branch Name
+coreBanking.operation.bankDraft.ownerInfo.amount = Amount
+coreBanking.operation.bankDraft.ownerInfo.paidByAcNo = Paid by A/C No
+coreBanking.operation.bankDraft.ownerInfo.name = Name
+coreBanking.operation.bankDraft.bankAccount.financialInstitution = Financial Institution
+# create account
+coreBanking.operation.ac.create.header.lbl= Creating Account
+coreBanking.operation.ac.create.client.id.lbl= Client ID
+coreBanking.operation.ac.create.ac.category.lbl= Choose A/C Category
+coreBanking.operation.ac.create.product.category.list=Product List
+coreBanking.operation.ac.create.product.category.lbl= Choose Product
+coreBanking.operation.ac.create.ac.type.lbl= Choose A/C Type
+coreBanking.operation.ac.create.joint.client.lbl= Choose Joint Client
+coreBanking.operation.ac.create.pagination.prev.lbl= Prev
+coreBanking.operation.ac.create.pagination.next.lbl= Next
+coreBanking.operation.ac.create.step.ac.product.list= Product Info
+coreBanking.operation.ac.create.step.ac.category.lbl= Selecting A/C Type
+coreBanking.operation.ac.create.step.ac.product.lbl=Selecting Product
+coreBanking.operation.ac.create.step.ac.confirmation.lbl=Confirmation
+
+#Account Close
+coreBanking.operation.accountClose.preBalance.lbl=Previous Balance
+coreBanking.operation.accountClose.chargeApply.lbl =Charge Apply
+coreBanking.operation.accountClose.balance.lbl =Available Balance
+coreBanking.operation.accountClose.accountVerify.tabLbl =Account Verify
+coreBanking.operation.accountClose.reasonForClose.tabLbl =Account Close Reason
+coreBanking.operation.accountClose.docCollect.title =Document Collect
+coreBanking.operation.accountClose.docCollect.checkBook.lbl =Cheque Book
+coreBanking.operation.accountClose.docCollect.card.lbl =Card
+coreBanking.operation.accountClose.docCollect.other.lbl =Other Bank Document
+#Account Close Reason
+coreBanking.operation.accountClose.reason.lbl =Reason For Close
+coreBanking.operation.accountClose.reason1.lbl =Account moved within oroscapital
+coreBanking.operation.accountClose.reason2.lbl =Inactive account/not being used
+coreBanking.operation.accountClose.reason3.lbl =Dissatisfied with the service/product features
+coreBanking.operation.accountClose.reason4.lbl =Unable to maintain the minimum balance/charges
+coreBanking.operation.accountClose.reason5.lbl =Moved to non-OrosCapital bank location/inconvenient
+coreBanking.operation.accountClose.reason6.lbl =Interest rate not competitive
+coreBanking.operation.accountClose.reason7.lbl =Accountholder deceased
+coreBanking.operation.accountClose.reason8.lbl =Resigned from corporate (salary account)
+coreBanking.operation.accountClose.reason9.lbl =Others please Specify
+
+
+#cash Withdrawal
+
+coreBanking.operation.cashWithdrawal.title=Cash Withdrawal
+coreBanking.operation.cashWithdrawal.accountNo.label=Account Number
+coreBanking.operation.cashWithdrawal.fullWithdrawal.label=Is this a full withdrawal?
+coreBanking.operation.cashWithdrawal.askForCloseAccount.label=Would You Like To Close This Account ?
+coreBanking.operation.cashWithdrawal.withdrawAmount.label=Amount
+coreBanking.operation.cashWithdrawal.chequeNumber.label=Cheque Number
+coreBanking.operation.cashWithdrawal.signature.title=Signature
+coreBanking.operation.cashWithdrawal.signature.label= Signature
+coreBanking.operation.cashWithdrawal.name.label=Name
+coreBanking.operation.cashWithdrawal.yes.label=Yes
+coreBanking.operation.cashWithdrawal.no.label=No
+
+#Withdrawal Approval
+coreBanking.operation.cashWithdrawal.approval.list.user.label=User
+coreBanking.operation.cashWithdrawal.approval.list.accountNo.label=Account No
+coreBanking.operation.cashWithdrawal.approval.list.amount.label=Amount
+coreBanking.operation.cashWithdrawal.approval.list.chequeNo.label=Cheque No
+coreBanking.operation.cashWithdrawal.approval.list.status.label=Status
+
+##Dormant Account Reactivate
+coreBanking.dormantAccount.reactivate.accountVerify=Account Verify
+coreBanking.dormantAccount.reactivate.evidenceAttachment=Evidence Attachment
+coreBanking.dormantAccount.reactivate.previousAttach=Previous Attachment
+coreBanking.dormantAccount.reactivate.addAttachment=Add
+
+##
+
+
+
+# retail agent
+agent.tab.personalInfo =Personal Info
+agent.tab.contactDetail =Contact Details
+agent.tab.residentialAddress = Residential Address
+agent.tab.additionalDetail = Additional Detail
+agent.tab.helpingClient = Client Help
+agent.tab.thirdParty= Correspondence & Administration
+agent.tab.attachment= Attachments
+
+agent.personalInfo.label.firstName= First Name
+agent.personalInfo.label.middleName = Middle Name
+agent.personalInfo.label.lastName = Last Name
+agent.personalInfo.label.gender = Gender
+agent.personalInfo.label.maritalStatus = Marital Status
+agent.personalInfo.label.nationality = Nationality
+agent.personalInfo.label.nationalID = National ID
+agent.personalInfo.label.profession = Profession
+agent.personalInfo.label.nationality2 = Second Nationality
+agent.personalInfo.label.countryofBirth = Country of Birth
+
+agent.contactDetail.label.phoneNo = Phone No
+agent.contactDetail.label.email1 = Email
+agent.contactDetail.label.faxNo = Fax
+agent.contactDetail.label.mobileNo = Mobile No
+agent.contactDetail.label.websiteUrl= Website Address
+
+agent.residentialAddress.label.addressLine1 =Address
+agent.residentialAddress.label.city = City
+agent.residentialAddress.label.streetName = Street
+agent.residentialAddress.label.country =Country
+agent.residentialAddress.label.postCode = Post Code
+
+agent.additionalDetail.label.residencyTax =Residency for Tax Purposes
+agent.additionalDetail.label.domicile = Domicile
+agent.additionalDetail.label.incomeTax = Income Tax Rate
+agent.additionalDetail.label.insurenceNo =National Insurance Number
+agent.additionalDetail.label.taxReference =Tax Reference
+
+agent.helpingClient.label.gross=Gross amount per year
+agent.helpingClient.label.investment = Investment Time horizon
+agent.helpingClient.label.investment.horizon1 =1-3 years
+agent.helpingClient.label.investment.horizon2 =3-5 years
+agent.helpingClient.label.investment.horizon3 =5-10 years
+agent.helpingClient.label.investment.horizon4 =10+ years
+agent.helpingClient.label.risk= Investment Objectives & Risk Classification
+agent.helpingClient.label.risk.risk1=Income Return
+agent.helpingClient.label.risk.risk2=Aggressive Total Return
+agent.helpingClient.label.risk.risk3=Income and Growth Return
+agent.helpingClient.label.benchmark = Benchmark
+
+agent.thirdParty.label.checkbox1 =Same As Personal Info
+agent.thirdParty.label.checkbox2 =Different From Personal Info
+agent.thirdParty.label.name = Contact Name
+agent.thirdParty.label.role = Role
+agent.thirdParty.label.address = Address
+agent.thirdParty.label.firm =Name of Firm
+agent.thirdParty.label.nationality3=Nationality
+agent.thirdParty.label.nationalID2=National ID
+agent.thirdParty.label.countryofBirth2=Country of Birth
+agent.thirdParty.label.email2= Email
+agent.thirdParty.label.phone2= Phone No
+agent.thirdParty.label.postCode2= Post Code
+agent.thirdParty.label.residency=Residency for Tax Purposes
+
+
+agent.agentList.addButton=Add Agent
+agent.agentList.header=Retail Agent List
+agent.agentList.firstName=First Name
+agent.agentList.nationality=Nationality
+agent.agentList.gender=Gender
+
+#loan
+loan.loanApplication.label.accNo= Account No.
+loan.loanApplication.label.accName= Account Holder Name
+loan.loanApplication.label.amount= Amount Requested
+loan.loanApplication.label.amountInWord= Amount in words
+loan.loanApplication.label.purpose= Purpose of Loan
+loan.loanApplication.label.loanDuration= Loan Duration
+loan.loanApplication.label.income= Source of Income
+loan.loanApplication.button.next= Next
+loan.loanApplication.button.update= Update
+loan.loanRequestedList.table.header= List of Loan Requests
+loan.accountInfo.label.accountName= Account Name
+loan.accountInfo.label.location= Location
+loan.accountInfo.label.contactNo= Contact Number
+loan.accountInfo.label.email= Email
+
+#Vendor Account Open
+#Basic Info
+coreBanking.accounting.vendor.basicInfo.vendorCode = Vendor Code
+coreBanking.accounting.vendor.basicInfo.vendorName = Vendor Name
+coreBanking.accounting.vendor.basicInfo.firstName  = First Name
+coreBanking.accounting.vendor.basicInfo.middleName = Middle Name
+coreBanking.accounting.vendor.basicInfo.lastName = Last Name
+coreBanking.accounting.vendor.basicInfo.gender = Gender
+coreBanking.accounting.vendor.basicInfo.email  = Email
+coreBanking.accounting.vendor.basicInfo.defaultGlAccount = Default GL Account
+coreBanking.accounting.vendor.basicInfo.ChamOfCommerce = Chamber Of Commerce
+coreBanking.accounting.vendor.basicInfo.vat = Vat
+coreBanking.accounting.vendor.basicInfo.paymentTerm = Payment Term
+coreBanking.accounting.vendor.basicInfo.type = Type
+coreBanking.accounting.vendor.basicInfo.comments = Comments
+coreBanking.accounting.vendor.basicInfo.status = Status
+
+#General Address
+coreBanking.accounting.vendor.generalAddress.contactPersonName = Contact Person Name
+coreBanking.accounting.vendor.generalAddress.contactPersonReference = Contact Person Reference
+coreBanking.accounting.vendor.generalAddress.contactDealType = Contact Deal Type
+coreBanking.accounting.vendor.generalAddress.addressLine1 = Address Line1
+coreBanking.accounting.vendor.generalAddress.addressLine2 = Address Line2
+
+#Bank Account Info
+coreBanking.accounting.vendor.bankAccount.bankName = Bank Name
+coreBanking.accounting.vendor.bankAccount.accountNo = Account Number
+coreBanking.accounting.vendor.bankAccount.accountName = Account Name
+coreBanking.accounting.vendor.bankAccount.ibanPrefix = Iban Prefix
+
+#AccountHolder Personal Info
+coreBanking.clients.accountHolder.basicInfo.fatherName = Father's Name
+coreBanking.clients.accountHolder.basicInfo.motherName = Mother's Name
+coreBanking.clients.accountHolder.basicInfo.profession = Profession
+coreBanking.clients.accountHolder.basicInfo.birthCountry = Country of Birth
+coreBanking.clients.accountHolder.basicInfo.firstNationality = First Nationality
+coreBanking.clients.accountHolder.basicInfo.secondNationality = Second Nationality
+coreBanking.clients.accountHolder.basicInfo.nationalID = National ID
+
+#AccountHolder Family Info
+coreBanking.clients.accountHolder.familyInfo.name = Name
+coreBanking.clients.accountHolder.familyInfo.relation = Relation

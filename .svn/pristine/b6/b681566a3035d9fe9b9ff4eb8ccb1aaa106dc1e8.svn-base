@@ -1,0 +1,28 @@
+package com.gsl.oros.core.banking.loan
+
+import com.gsl.cbs.contraints.enums.StatusType
+import com.gsl.oros.core.banking.operation.Client
+
+class Loan {
+
+    Integer amount
+    String amountInWord
+    String accountNo
+    String purpose
+    String income
+    Date durationStart
+    Date durationEnd
+    Client client
+    StatusType status=StatusType.REQUESTED
+
+
+
+
+
+    static constraints = {
+        purpose nullable: true
+        amountInWord nullable: true
+        income nullable: true
+
+    }
+}
